@@ -19,6 +19,11 @@ export default {
     learnMore: "了解更多",
     noProductsFound: "未找到产品",
     andUp: "及以上",
+    specifications: "规格参数",
+    material: "材质",
+    dimensions: "尺寸",
+    weight: "重量",
+    color: "颜色",
   },
   nav: {
     furnitureStore: "家具商城",

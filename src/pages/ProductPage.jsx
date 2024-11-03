@@ -1,207 +1,205 @@
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
+import { useState, useEffect } from "react";
 import { useProducts } from "../context/ProductContext";
-import { Button } from "../components/ui/button";
-import Breadcrumb from "../components/common/Breadcrumb";
-import { Star, Truck, Shield, ArrowRight } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { useLanguage } from "../context/LanguageContext";
+import { ChevronRight, Star } from "lucide-react";
 
-function ProductPage() {
+/**
+ * Product detail page component that displays detailed information about a specific product
+ * @returns {JSX.Element} Product detail page
+ */
+const ProductPage = () => {
   const { id } = useParams();
-  const { products, categories } = useProducts();
-  const { t } = useTranslation();
-  const { currentLanguage } = useLanguage();
-  const product = products.find((p) => p.id === id);
+  const { products } = useProducts();
+  const { t, i18n } = useTranslation();
+  const [product, setProduct] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  if (!product) {
-    return <div>{t("product.notFound")}</div>;
-  }
+  const isEnglish = i18n.language === "en";
 
-  const getLocalizedContent = (content, contentEn) => {
-    return currentLanguage === "zh" ? content : contentEn;
+  useEffect(() => {
+    const foundProduct = products.find(
+      (p) => p.id === parseInt(id) || p.id === id
+    );
+    setProduct(foundProduct);
+    setLoading(false);
+  }, [id, products]);
+
+  if (loading) return <div className="p-4">Loading...</div>;
+  if (!product) return <div className="p-4">Product not found</div>;
+
+  // Generate rating stars
+  const renderRatingStars = (rating) => {
+    return [...Array(5)].map((_, index) => (
+      <Star
+        key={index}
+        className={`w-5 h-5 ${
+          index < rating
+            ? "text-yellow-400 fill-yellow-400"
+            : "text-gray-400 dark:text-gray-600"
+        }`}
+      />
+    ));
   };
 
-  const breadcrumbItems = [
-    { label: t("nav.home"), href: "/" },
-    {
-      label: t(`categories.${product.category}`),
-      href: `/category/${product.category}`,
-    },
-    { label: getLocalizedContent(product.name, product.nameEn) },
-  ];
-
   return (
-    <div className="space-y-6">
-      <Breadcrumb items={breadcrumbItems} />
+    <div className="container mx-auto px-4 py-8">
+      {/* Breadcrumb */}
+      <nav className="flex mb-8 text-sm">
+        <Link
+          to="/"
+          className="text-blue-600 dark:text-blue-400 hover:opacity-80"
+        >
+          {t("nav.home")}
+        </Link>
+        <ChevronRight className="mx-2 w-4 h-4 text-gray-500 dark:text-gray-400" />
+        <Link
+          to={`/category/${product.category}`}
+          className="text-blue-600 dark:text-blue-400 hover:opacity-80"
+        >
+          {t(`categories.${product.category}`)}
+        </Link>
+        <ChevronRight className="mx-2 w-4 h-4 text-gray-500 dark:text-gray-400" />
+        <span className="text-gray-900 dark:text-gray-100 font-medium">
+          {isEnglish ? product.nameEn : product.name}
+        </span>
+      </nav>
 
-      <div className="grid grid-cols-12 gap-8">
-        {/* Image Gallery */}
-        <div className="col-span-5">
-          <div className="sticky top-4">
-            <div className="aspect-square w-full">
-              <img
-                src={product.images[0]}
-                alt={product.name}
-                className="w-full h-full object-cover rounded-lg"
-              />
-            </div>
-            <div className="mt-4 grid grid-cols-4 gap-2">
-              {product.images.map((image, index) => (
-                <button
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        {/* Product Image Section */}
+        <div className="space-y-4">
+          <div className="aspect-square bg-white dark:bg-gray-800 rounded-lg shadow-lg">
+            <img
+              src={product.images[0]}
+              alt={isEnglish ? product.nameEn : product.name}
+              className="w-full h-full object-cover rounded-lg"
+            />
+          </div>
+          {product.images?.length > 1 && (
+            <div className="grid grid-cols-4 gap-2">
+              {product.images.map((img, index) => (
+                <div
                   key={index}
-                  className="border-2 rounded-md overflow-hidden hover:border-primary aspect-square"
+                  className="bg-white dark:bg-gray-800 rounded-md"
                 >
                   <img
-                    src={image}
-                    alt=""
-                    className="w-full h-full object-cover"
+                    src={img}
+                    alt={`${isEnglish ? product.nameEn : product.name} view ${index + 1}`}
+                    className="w-full aspect-square object-cover rounded-md cursor-pointer hover:opacity-80"
                   />
-                </button>
+                </div>
               ))}
             </div>
-          </div>
+          )}
         </div>
 
-        {/* Product Info */}
-        <div className="col-span-4">
-          <h1 className="text-2xl font-bold mb-2 text-foreground">
-            {getLocalizedContent(product.name, product.nameEn)}
-          </h1>
-          <div className="flex items-center mb-4">
-            <div className="flex text-yellow-400">
-              {[...Array(5)].map((_, i) => (
-                <Star key={i} className="w-4 h-4 fill-current" />
-              ))}
-            </div>
-            <span className="ml-2 text-primary text-sm">
-              {product.reviews} {t("common.reviews")}
-            </span>
-          </div>
-
-          <div className="border-t border-b border-border py-4 my-4">
-            <div className="text-3xl font-bold text-foreground">
-              ${product.price.toFixed(2)}
-            </div>
-            <div className="text-sm text-muted-foreground mt-1">
-              {t("product.freeDelivery")}
+        {/* Product Details Section */}
+        <div className="space-y-6">
+          <div>
+            <h1 className="text-4xl font-bold mb-2 text-gray-900 dark:text-gray-100">
+              {isEnglish ? product.nameEn : product.name}
+            </h1>
+            <div className="flex items-center gap-2 mb-4">
+              <div className="flex">{renderRatingStars(product.rating)}</div>
+              <span className="text-gray-700 dark:text-gray-300 font-medium">
+                ({product.reviews || 0} {t("common.reviews")})
+              </span>
             </div>
           </div>
 
-          <div className="space-y-4">
-            <h3 className="font-semibold text-foreground">
-              {t("product.aboutItem")}
-            </h3>
-            <p className="text-muted-foreground">
-              {getLocalizedContent(product.description, product.descriptionEn)}
+          <div className="border-t border-b border-gray-200 dark:border-gray-700 py-4">
+            <p className="text-4xl font-bold text-blue-600 dark:text-blue-400">
+              ¥{product.price.toFixed(2)}
             </p>
+            {product.oldPrice && (
+              <p className="text-gray-500 dark:text-gray-400 line-through">
+                ¥{product.oldPrice.toFixed(2)}
+              </p>
+            )}
+          </div>
 
-            <div className="space-y-2">
-              <h3 className="font-semibold text-foreground">
-                {t("product.specifications")}
-              </h3>
-              <div className="grid grid-cols-2 gap-2">
-                <div className="flex justify-between">
-                  <span className="text-muted-foreground">
-                    {t("product.material")}:
-                  </span>
-                  <span className="text-foreground">
-                    {getLocalizedContent(
-                      product.specifications.material,
-                      product.specifications.materialEn
-                    )}
-                  </span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-muted-foreground">
-                    {t("product.dimensions")}:
-                  </span>
-                  <span className="text-foreground">
-                    {getLocalizedContent(
-                      product.specifications.dimensions,
-                      product.specifications.dimensionsEn
-                    )}
-                  </span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-muted-foreground">
-                    {t("product.weight")}:
-                  </span>
-                  <span className="text-foreground">
-                    {getLocalizedContent(
-                      product.specifications.weight,
-                      product.specifications.weightEn
-                    )}
-                  </span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-muted-foreground">
-                    {t("product.color")}:
-                  </span>
-                  <span className="text-foreground">
-                    {getLocalizedContent(
-                      product.specifications.color.join("、"),
-                      product.specifications.colorEn.join(", ")
-                    )}
-                  </span>
-                </div>
+          {/* Description */}
+          <div className="bg-gray-100 dark:bg-gray-800 p-4 rounded-lg">
+            <h2 className="text-xl font-semibold mb-2 text-gray-900 dark:text-gray-100">
+              {t("product.aboutItem")}
+            </h2>
+            <p className="text-gray-700 dark:text-gray-300 leading-relaxed text-lg">
+              {isEnglish ? product.descriptionEn : product.description}
+            </p>
+          </div>
+
+          {/* Specifications */}
+          <div className="bg-gray-100 dark:bg-gray-800 p-4 rounded-lg">
+            <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-gray-100">
+              {t("product.specifications")}
+            </h2>
+            <div className="space-y-3">
+              <div className="grid grid-cols-2 gap-4">
+                <span className="text-gray-600 dark:text-gray-400 font-medium">
+                  {t("product.material")}:
+                </span>
+                <span className="text-gray-900 dark:text-gray-100">
+                  {isEnglish
+                    ? product.specifications.materialEn
+                    : product.specifications.material}
+                </span>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <span className="text-gray-600 dark:text-gray-400 font-medium">
+                  {t("product.dimensions")}:
+                </span>
+                <span className="text-gray-900 dark:text-gray-100">
+                  {isEnglish
+                    ? product.specifications.dimensionsEn
+                    : product.specifications.dimensions}
+                </span>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <span className="text-gray-600 dark:text-gray-400 font-medium">
+                  {t("product.weight")}:
+                </span>
+                <span className="text-gray-900 dark:text-gray-100">
+                  {isEnglish
+                    ? product.specifications.weightEn
+                    : product.specifications.weight}
+                </span>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <span className="text-gray-600 dark:text-gray-400 font-medium">
+                  {t("product.color")}:
+                </span>
+                <span className="text-gray-900 dark:text-gray-100">
+                  {isEnglish
+                    ? product.specifications.colorEn.join(", ")
+                    : product.specifications.color.join(", ")}
+                </span>
               </div>
             </div>
           </div>
-        </div>
 
-        {/* Buy Box */}
-        <div className="col-span-3">
-          <div className="border rounded-lg p-4 sticky top-4 bg-card">
-            <div className="text-2xl font-bold mb-2 text-foreground">
-              ${product.price.toFixed(2)}
-            </div>
-
-            <div className="flex items-center text-sm mb-4 text-muted-foreground">
-              <Truck className="w-4 h-4 mr-2" />
-              <span>{t("product.freeDelivery")}</span>
-            </div>
-
-            <div className="text-lg font-semibold mb-2">
-              {product.inStock ? (
-                <span className="text-green-500 dark:text-green-400">
-                  {t("common.inStock")}
-                </span>
-              ) : (
-                <span className="text-red-500 dark:text-red-400">
-                  {t("common.outOfStock")}
-                </span>
-              )}
-            </div>
-
-            <div className="space-y-3">
-              <Button className="w-full" size="lg" disabled={!product.inStock}>
+          {/* Add to Cart Section */}
+          <div className="space-y-4">
+            <div className="flex items-center gap-4">
+              <button className="bg-blue-600 dark:bg-blue-500 text-white px-8 py-4 rounded-lg hover:opacity-90 transition-colors w-full text-lg font-semibold">
                 {t("common.addToCart")}
-              </Button>
-              <Button
-                className="w-full"
-                variant="secondary"
-                size="lg"
-                disabled={!product.inStock}
-              >
-                {t("common.buyNow")}
-              </Button>
+              </button>
             </div>
 
-            <div className="mt-4 space-y-2">
-              <div className="flex items-center text-sm text-muted-foreground">
-                <Shield className="w-4 h-4 mr-2" />
-                <span>{t("product.secureTransaction")}</span>
-              </div>
-              <div className="flex items-center text-sm text-muted-foreground">
-                <ArrowRight className="w-4 h-4 mr-2" />
-                <span>{t("product.shipsFrom")}</span>
-              </div>
-            </div>
+            {/* Stock Status */}
+            <p
+              className={`text-lg font-medium ${
+                product.inStock
+                  ? "text-green-600 dark:text-green-400"
+                  : "text-red-600 dark:text-red-400"
+              }`}
+            >
+              {product.inStock ? t("common.inStock") : t("common.outOfStock")}
+            </p>
           </div>
         </div>
       </div>
     </div>
   );
-}
+};
 
 export default ProductPage;

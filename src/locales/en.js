@@ -14,6 +14,11 @@ export default {
     results: "results",
     resultsIn: "results in",
     andUp: "& up",
+    specifications: "Specifications",
+    material: "Material",
+    dimensions: "Dimensions",
+    weight: "Weight",
+    color: "Color",
   },
   nav: {
     furnitureStore: "Furniture Store",
