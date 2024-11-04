@@ -103,4 +103,15 @@ export default {
       consultation: '專業諮詢服務'
     }
   },
+  checkout: {
+    title: '結帳',
+    name: '姓名',
+    email: '電子郵件',
+    phone: '電話',
+    address: '送貨地址',
+    submitOrder: '提交訂單',
+    processing: '處理中...',
+    successMessage: '訂單已成功提交！訂單編號：{{orderId}}',
+    errorMessage: '處理訂單時發生錯誤。請重試。',
+  },
 }; 

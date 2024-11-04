@@ -2,12 +2,13 @@ import { useTranslation } from "react-i18next";
 import { useCart } from "../context/CartContext";
 import { Plus, Minus, X } from "lucide-react";
 import { Button } from "../components/ui/button";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { formatCurrency } from "../utils/currency";
 
 const CartPage = () => {
   const { t, i18n } = useTranslation();
   const { cart, removeFromCart, updateQuantity, getTotal } = useCart();
+  const navigate = useNavigate();
   const isEnglish = i18n.language === "en";
 
   if (cart.length === 0) {
@@ -98,34 +99,27 @@ const CartPage = () => {
         </div>
 
         {/* Order Summary */}
-        <div className="lg:col-span-1">
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6 sticky top-4">
-            <h2 className="text-lg font-semibold mb-4 text-gray-900 dark:text-gray-100">
-              {t("cart.orderSummary")}
-            </h2>
-
-            <div className="space-y-2 mb-4">
-              <div className="flex justify-between text-gray-600 dark:text-gray-400">
-                <span>{t("cart.subtotal")}</span>
-                <span>{formatCurrency(getTotal(), i18n.language)}</span>
-              </div>
-              <div className="flex justify-between text-gray-600 dark:text-gray-400">
-                <span>{t("cart.shipping")}</span>
-                <span>{t("cart.freeShipping")}</span>
-              </div>
+        <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow h-fit">
+          <h2 className="text-lg font-semibold mb-4">
+            {t("cart.orderSummary")}
+          </h2>
+          <div className="space-y-2 mb-4">
+            <div className="flex justify-between">
+              <span>{t("cart.subtotal")}</span>
+              <span>{formatCurrency(getTotal(), i18n.language)}</span>
             </div>
-
-            <div className="border-t dark:border-gray-700 pt-4 mb-6">
-              <div className="flex justify-between text-lg font-semibold text-gray-900 dark:text-gray-100">
-                <span>{t("cart.total")}</span>
-                <span>{formatCurrency(getTotal(), i18n.language)}</span>
-              </div>
+            <div className="flex justify-between">
+              <span>{t("cart.shipping")}</span>
+              <span className="text-green-600">{t("cart.freeShipping")}</span>
             </div>
-
-            <Button className="w-full py-6 text-lg">
-              {t("cart.proceedToCheckout")}
-            </Button>
+            <div className="flex justify-between font-bold pt-2 border-t">
+              <span>{t("cart.total")}</span>
+              <span>{formatCurrency(getTotal(), i18n.language)}</span>
+            </div>
           </div>
+          <Button className="w-full" onClick={() => navigate("/checkout")}>
+            {t("cart.proceedToCheckout")}
+          </Button>
         </div>
       </div>
     </div>

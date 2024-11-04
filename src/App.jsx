@@ -12,6 +12,8 @@ import { ProductProvider } from "./context/ProductContext";
 import { ThemeProvider } from "./context/ThemeContext";
 import { LanguageProvider } from "./context/LanguageContext";
 import { CartProvider } from "./context/CartContext";
+import { CheckoutForm } from "./components/checkout/CheckoutForm";
+import { Toaster } from "react-hot-toast";
 
 function App() {
   return (
@@ -21,6 +23,7 @@ function App() {
           <CartProvider>
             <Router>
               <div className="min-h-screen flex flex-col bg-background">
+                <Toaster position="top-center" />
                 <Header />
                 <main className="flex-grow container mx-auto px-4 py-8">
                   <Routes>
@@ -34,6 +37,7 @@ function App() {
                     <Route path="/admin" element={<AdminPage />} />
                     <Route path="/cart" element={<CartPage />} />
                     <Route path="/about" element={<AboutPage />} />
+                    <Route path="/checkout" element={<CheckoutForm />} />
                   </Routes>
                 </main>
                 <Footer />

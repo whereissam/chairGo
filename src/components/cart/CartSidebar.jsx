@@ -107,13 +107,21 @@ const CartSidebar = () => {
 
           {/* Footer */}
           {cart.length > 0 && (
-            <div className="border-t dark:border-gray-700 p-4 space-y-4">
-              <div className="flex justify-between text-lg font-semibold">
+            <div className="mt-auto p-4 border-t">
+              <div className="flex justify-between mb-2">
                 <span>{t("cart.total")}</span>
-                <span>{formatCurrency(getTotal(), i18n.language)}</span>
+                <span className="font-bold">
+                  {formatCurrency(getTotal(), i18n.language)}
+                </span>
               </div>
-              <Button className="w-full py-6 text-lg" onClick={handleCheckout}>
-                {t("cart.checkout")}
+              <Button
+                className="w-full"
+                onClick={() => {
+                  setIsCartOpen(false);
+                  navigate("/checkout");
+                }}
+              >
+                {t("cart.proceedToCheckout")}
               </Button>
             </div>
           )}

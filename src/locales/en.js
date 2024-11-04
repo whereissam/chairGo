@@ -90,4 +90,32 @@ export default {
       consultation: 'Professional Consultation Services'
     }
   },
+  checkout: {
+    title: 'Checkout',
+    name: 'Full Name',
+    email: 'Email',
+    phone: 'Phone',
+    address: 'Shipping Address',
+    submitOrder: 'Place Order',
+    processing: 'Processing...',
+    successMessage: 'Order placed successfully! Order ID: {{orderId}}',
+    errorMessage: 'There was an error processing your order. Please try again.',
+    orderDetails: 'Order Details',
+    orderConfirmation: 'Order Confirmation',
+    thankYou: 'Thank You for Your Order',
+    orderProcessing: 'We are processing your order',
+    orderSuccess: 'Order Successfully Placed',
+    backToHome: 'Back to Home',
+    continueShoping: 'Continue Shopping',
+    orderNumber: 'Order Number',
+    orderDate: 'Order Date',
+    orderTotal: 'Order Total',
+    shippingInfo: 'Shipping Information',
+    paymentInfo: 'Payment Information',
+    orderStatus: 'Order Status',
+    pending: 'Pending',
+    confirmed: 'Confirmed',
+    shipped: 'Shipped',
+    delivered: 'Delivered'
+  },
 }; 
