@@ -26,10 +26,11 @@ export default {
     color: "颜色",
   },
   nav: {
-    furnitureStore: "家具商城",
+    furnitureStore: "椅購王",
     home: "首页",
     admin: "管理",
     cart: "购物车",
+    about: "關於我們",
     allProducts: "全部商品",
   },
   categories: {
@@ -38,7 +39,7 @@ export default {
     living: "客厅家具",
     dining: "餐厅家具",
     bedroom: "卧室家具",
-    outdoor: "户外家具",
+    outdoor: "外家具",
     kids: "儿童家具",
     storage: "收纳整理",
     accent: "装饰家具",
@@ -49,10 +50,11 @@ export default {
     customerReview: "顾客评价",
     priceRanges: {
       all: "全部价格",
-      underHundred: "¥100以下",
-      hundredToTwoHundred: "¥100 - ¥200",
-      twoHundredToFiveHundred: "¥200 - ¥500",
-      overFiveHundred: "¥500以上"
+      underHundred: "NT$3000以下",
+      hundredToTwoHundred: "NT$3000 - NT$6000",
+      twoHundredToFiveHundred: "NT$6000 - NT$10000",
+      overFiveHundred: "NT$10000以上",
+      andUp: "以上"
     },
     ratingAll: "所有评分",
   },
@@ -82,5 +84,23 @@ export default {
     shipping: "运费",
     freeShipping: "免费",
     proceedToCheckout: "前往结算",
-  }
+  },
+  about: {
+    title: '關於椅購王',
+    story: '我們的故事',
+    storyContent: '椅購王是台中市的專業椅子傢俬專賣店，我們專注於提供高品質的椅子和傢具。',
+    contact: '聯絡資訊',
+    address: '台中市龍井區國際街131號',
+    phone: '+886 4 2652 5165',
+    hours: '週一至週日 (關門時間：晚上8點)',
+    services: '我們的服務',
+    quality: '品質保證',
+    qualityContent: '我們堅持提供最高品質的產品，所有商品都經過嚴格的品質控管。',
+    servicesList: {
+      manufacturing: '台灣製造優質椅子',
+      commercial: '商業空間桌椅訂製',
+      custom: '客製化傢具服務',
+      consultation: '專業諮詢服務'
+    }
+  },
 }; 

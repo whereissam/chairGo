@@ -22,10 +22,11 @@ export default {
     learnMore: "Learn More",
   },
   nav: {
-    furnitureStore: "Furniture Store",
+    furnitureStore: "ChairGo",
     home: "Home",
     admin: "Admin",
     cart: "Cart",
+    about: "About",
     allProducts: "All Products",
   },
   categories: {
@@ -45,10 +46,11 @@ export default {
     customerReview: "Customer Review",
     priceRanges: {
       all: "All Prices",
-      underHundred: "Under $100",
-      hundredToTwoHundred: "$100 to $200",
-      twoHundredToFiveHundred: "$200 to $500",
-      overFiveHundred: "Over $500",
+      underHundred: "Under NT$3,000",
+      hundredToTwoHundred: "NT$3,000 - NT$6,000",
+      twoHundredToFiveHundred: "NT$6,000 - NT$10,000",
+      overFiveHundred: "Over NT$10,000",
+      andUp: "& up",
     },
     ratingAll: "All Ratings",
   },
@@ -69,5 +71,23 @@ export default {
     shipping: "Shipping",
     freeShipping: "Free",
     proceedToCheckout: "Proceed to Checkout",
-  }
+  },
+  about: {
+    title: 'About ChairGo',
+    story: 'Our Story',
+    storyContent: 'ChairGo is a professional chair and furniture store in Taichung City, dedicated to providing high-quality chairs and furniture.',
+    contact: 'Contact Information',
+    address: 'No. 131, Guoji St, Longjing District, Taichung City',
+    phone: '+886 4 2652 5165',
+    hours: 'Monday to Sunday (Closing time: 8:00 PM)',
+    services: 'Our Services',
+    quality: 'Quality Guarantee',
+    qualityContent: 'We are committed to providing the highest quality products, all items undergo strict quality control.',
+    servicesList: {
+      manufacturing: 'Taiwan-made Quality Chairs',
+      commercial: 'Commercial Space Furniture Customization',
+      custom: 'Custom Furniture Services',
+      consultation: 'Professional Consultation Services'
+    }
+  },
 }; 

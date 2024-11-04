@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, Filter } from "lucide-react";
 import { Button } from "../ui/button";
 import {
   DropdownMenu,
@@ -8,6 +8,13 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
 } from "../ui/dropdown";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "../ui/sheet";
 import Sidebar from "../home/Sidebar";
 import ProductGrid from "../home/ProductGrid";
 import SearchBar from "../common/SearchBar";
@@ -16,7 +23,6 @@ import { Link } from "react-router-dom";
 import { useCart } from "../../context/CartContext";
 import { convertPrice } from "../../utils/currency";
 
-// Keep the categories constant
 const AVAILABLE_CATEGORIES = [
   "all",
   "office",
@@ -40,6 +46,7 @@ function ProductListingLayout({
   const [priceRange, setPriceRange] = useState(null);
   const [selectedRating, setSelectedRating] = useState(null);
   const [filteredProducts, setFilteredProducts] = useState(products);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const sortOptions = [
     { key: "featured", label: t("common.featured") },
@@ -52,7 +59,6 @@ function ProductListingLayout({
 
   const { addToCart } = useCart();
 
-  // Handle category change
   const handleCategoryChange = (category) => {
     setSelectedCategory(category);
     if (onCategoryChange) {
@@ -60,28 +66,20 @@ function ProductListingLayout({
     }
   };
 
-  // Update filtered products whenever any filter changes
   useEffect(() => {
     let result = products;
 
-    // Apply fuzzy search filter
     if (searchQuery) {
       result = result
         .filter((product) => {
-          // Search in product name
           const nameScore = fuzzySearch(searchQuery, product.name);
-          // Search in product description if it exists
           const descScore = product.description
             ? fuzzySearch(searchQuery, product.description)
             : 0;
-          // Search in category
           const categoryScore = fuzzySearch(searchQuery, product.category);
-
-          // Return true if any score is above 0 (meaning there was some match)
           return nameScore > 0 || descScore > 0 || categoryScore > 0;
         })
         .sort((a, b) => {
-          // Sort by relevance (higher score first)
           const scoreA = Math.max(
             fuzzySearch(searchQuery, a.name),
             a.description ? fuzzySearch(searchQuery, a.description) : 0,
@@ -96,14 +94,12 @@ function ProductListingLayout({
         });
     }
 
-    // Apply category filter
     if (selectedCategory && selectedCategory !== "all") {
       result = result.filter(
         (product) => product.category === selectedCategory
       );
     }
 
-    // Apply price range filter
     if (priceRange) {
       result = result.filter((product) => {
         const convertedPrice = convertPrice(product.price, i18n.language);
@@ -113,14 +109,6 @@ function ProductListingLayout({
       });
     }
 
-    // Comment out rating filter
-    /*
-    if (selectedRating) {
-      result = result.filter((product) => product.rating >= selectedRating);
-    }
-    */
-
-    // Modify the featured sort to not use rating
     result = [...result].sort((a, b) => {
       switch (selectedSort.key) {
         case "priceLowToHigh":
@@ -131,61 +119,103 @@ function ProductListingLayout({
           return new Date(b.createdAt) - new Date(a.createdAt);
         case "featured":
         default:
-          // return b.rating - a.rating; // Comment out rating-based sorting
-          return 0; // Default to no specific sorting for featured
+          return 0;
       }
     });
 
     setFilteredProducts(result);
-  }, [
-    products,
-    searchQuery,
-    selectedCategory,
-    priceRange,
-    // selectedRating, // Remove from dependencies
-    selectedSort,
-  ]);
+  }, [products, searchQuery, selectedCategory, priceRange, selectedSort]);
 
   return (
-    <div className="flex gap-6">
-      <Sidebar
-        categories={AVAILABLE_CATEGORIES}
-        selectedCategory={selectedCategory}
-        onSelectCategory={handleCategoryChange}
-        onPriceRangeChange={setPriceRange}
-      />
+    <div className="relative">
+      {/* Mobile Filter Button */}
+      <div className="lg:hidden flex justify-between items-center mb-4">
+        <Sheet>
+          <SheetTrigger asChild>
+            <Button
+              variant="outline"
+              size="sm"
+              className="flex items-center gap-2"
+            >
+              <Filter className="h-4 w-4" />
+              {t("filters.departments")}
+              <ChevronDown className="h-4 w-4 ml-2" />
+            </Button>
+          </SheetTrigger>
+          <SheetContent side="center" className="w-[90%] max-w-[400px] p-0">
+            <SheetHeader className="px-6 py-4 border-b border-border">
+              <SheetTitle>{t("filters.departments")}</SheetTitle>
+            </SheetHeader>
+            <div className="px-6 py-4">
+              <Sidebar
+                categories={AVAILABLE_CATEGORIES}
+                selectedCategory={selectedCategory}
+                onSelectCategory={(category) => {
+                  handleCategoryChange(category);
+                  setIsSidebarOpen(false);
+                }}
+                onPriceRangeChange={setPriceRange}
+                selectedPriceRange={priceRange}
+                isMobile={true}
+              />
+            </div>
+          </SheetContent>
+        </Sheet>
+      </div>
 
-      <div className="flex-1">
-        <div className="mb-4 flex justify-between items-center">
-          <p className="text-sm text-gray-600">
-            {filteredProducts.length} {t("common.results")}
-            {selectedCategory !== "all" &&
-              ` ${t("common.resultsIn")} ${t(`categories.${selectedCategory}`)}`}
-          </p>
-          <div className="flex items-center space-x-4">
-            <SearchBar value={searchQuery} onChange={setSearchQuery} />
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="outline" className="w-[200px] justify-between">
-                  {t("common.sortBy")}: {selectedSort.label}
-                  <ChevronDown className="ml-2 h-4 w-4" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-[200px]">
-                {sortOptions.map((option) => (
-                  <DropdownMenuItem
-                    key={option.key}
-                    onClick={() => setSelectedSort(option)}
-                  >
-                    {option.label}
-                  </DropdownMenuItem>
-                ))}
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </div>
+      <div className="flex flex-col lg:flex-row gap-6">
+        {/* Desktop Sidebar */}
+        <div className="hidden lg:block lg:w-64">
+          <Sidebar
+            categories={AVAILABLE_CATEGORIES}
+            selectedCategory={selectedCategory}
+            onSelectCategory={handleCategoryChange}
+            onPriceRangeChange={setPriceRange}
+            selectedPriceRange={priceRange}
+            isMobile={false}
+          />
         </div>
 
-        <ProductGrid products={filteredProducts} />
+        {/* Main Content */}
+        <div className="flex-1">
+          <div className="mb-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+            <p className="text-sm text-muted-foreground">
+              {filteredProducts.length} {t("common.results")}
+              {selectedCategory !== "all" &&
+                ` ${t("common.resultsIn")} ${t(`categories.${selectedCategory}`)}`}
+            </p>
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 w-full sm:w-auto">
+              <SearchBar
+                value={searchQuery}
+                onChange={setSearchQuery}
+                className="w-full sm:w-auto"
+              />
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    variant="outline"
+                    className="w-full sm:w-[200px] justify-between"
+                  >
+                    {t("common.sortBy")}: {selectedSort.label}
+                    <ChevronDown className="ml-2 h-4 w-4" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-[200px]">
+                  {sortOptions.map((option) => (
+                    <DropdownMenuItem
+                      key={option.key}
+                      onClick={() => setSelectedSort(option)}
+                    >
+                      {option.label}
+                    </DropdownMenuItem>
+                  ))}
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
+          </div>
+
+          <ProductGrid products={filteredProducts} />
+        </div>
       </div>
     </div>
   );

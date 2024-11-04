@@ -4,6 +4,7 @@ import CategoryPage from "./pages/CategoryPage";
 import ProductPage from "./pages/ProductPage";
 import AdminPage from "./pages/AdminPage";
 import CartPage from "./pages/CartPage";
+import AboutPage from "./pages/AboutPage";
 import Header from "./components/common/Header";
 import Footer from "./components/common/Footer";
 import CartSidebar from "./components/cart/CartSidebar";
@@ -32,6 +33,7 @@ function App() {
                     <Route path="/product/:id" element={<ProductPage />} />
                     <Route path="/admin" element={<AdminPage />} />
                     <Route path="/cart" element={<CartPage />} />
+                    <Route path="/about" element={<AboutPage />} />
                   </Routes>
                 </main>
                 <Footer />
