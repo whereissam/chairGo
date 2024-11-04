@@ -25,6 +25,7 @@ export default {
     home: "Home",
     admin: "Admin",
     cart: "Cart",
+    allProducts: "All Products",
   },
   categories: {
     all: "All Products",

@@ -1,148 +1,87 @@
-import { ChevronRight, ChevronDown } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { useState } from "react";
-import {
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-  DropdownMenuItem,
-} from "../ui/dropdown";
 import { Button } from "../ui/button";
 
-function Sidebar({
-  categories,
+const AVAILABLE_CATEGORIES = [
+  "all",
+  "office",
+  "living",
+  "dining",
+  "bedroom",
+  "outdoor",
+  "kids",
+  "storage",
+  "accent",
+];
+
+const Sidebar = ({
+  categories = AVAILABLE_CATEGORIES,
   selectedCategory,
   onSelectCategory,
   onPriceRangeChange,
-  onRatingChange,
-}) {
+}) => {
   const { t } = useTranslation();
-  const [selectedPriceRange, setSelectedPriceRange] = useState(null);
-  const [selectedRating, setSelectedRating] = useState(null);
 
   const priceRanges = [
-    { key: "all", min: 0, max: Infinity, label: "全部价格" },
-    { key: "underHundred", min: 0, max: 100 },
-    { key: "hundredToTwoHundred", min: 100, max: 200 },
-    { key: "twoHundredToFiveHundred", min: 200, max: 500 },
-    { key: "overFiveHundred", min: 500, max: Infinity },
+    { label: t("filters.priceRanges.all"), min: 0, max: Infinity },
+    { label: t("filters.priceRanges.underHundred"), min: 0, max: 100 },
+    {
+      label: t("filters.priceRanges.hundredToTwoHundred"),
+      min: 100,
+      max: 200,
+    },
+    {
+      label: t("filters.priceRanges.twoHundredToFiveHundred"),
+      min: 200,
+      max: 500,
+    },
+    {
+      label: t("filters.priceRanges.overFiveHundred"),
+      min: 500,
+      max: Infinity,
+    },
   ];
 
-  const handlePriceRangeClick = (range) => {
-    if (selectedPriceRange?.key === range.key) {
-      return;
-    }
-    setSelectedPriceRange(range);
-    onPriceRangeChange?.(range);
-  };
-
-  const handleRatingClick = (rating) => {
-    if (selectedRating === rating) {
-      setSelectedRating(null);
-      onRatingChange?.(null);
-    } else {
-      setSelectedRating(rating);
-      onRatingChange?.(rating);
-    }
-  };
-
   return (
-    <div className="w-56 flex-shrink-0 space-y-4">
-      {/* Category Dropdown */}
-      <div className="bg-card text-card-foreground rounded-lg shadow p-4 border border-border">
-        <h2 className="font-bold text-lg mb-4">{t("filters.departments")}</h2>
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline" className="w-full justify-between">
-              {selectedCategory === "all"
-                ? t("categories.all")
-                : t(`categories.${selectedCategory}`)}
-              <ChevronDown className="ml-2 h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent className="w-[200px]">
-            <DropdownMenuItem
-              onClick={() => onSelectCategory("all")}
-              className={selectedCategory === "all" ? "bg-accent" : ""}
-            >
-              {t("categories.all")}
-            </DropdownMenuItem>
-            {Object.entries(categories).map(([key]) => (
-              <DropdownMenuItem
-                key={key}
-                onClick={() => onSelectCategory(key)}
-                className={selectedCategory === key ? "bg-accent" : ""}
-              >
-                {t(`categories.${key}`)}
-              </DropdownMenuItem>
-            ))}
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </div>
-
-      {/* Price Filter */}
-      <div className="bg-card text-card-foreground rounded-lg shadow p-4 border border-border">
-        <h2 className="font-bold text-lg mb-4">{t("filters.price")}</h2>
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline" className="w-full justify-between">
-              {selectedPriceRange
-                ? t(`filters.priceRanges.${selectedPriceRange.key}`)
-                : t("filters.priceRanges.all")}
-              <ChevronDown className="ml-2 h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent className="w-[200px]">
-            {priceRanges.map((range) => (
-              <DropdownMenuItem
-                key={range.key}
-                onClick={() => handlePriceRangeClick(range)}
-                className={
-                  selectedPriceRange?.key === range.key ? "bg-accent" : ""
-                }
-              >
-                {t(`filters.priceRanges.${range.key}`)}
-              </DropdownMenuItem>
-            ))}
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </div>
-
-      {/* Customer Review */}
-      <div className="bg-card text-card-foreground rounded-lg shadow p-4 border border-border">
-        <h2 className="font-bold text-lg mb-4">
-          {t("filters.customerReview")}
+    <aside className="w-64 space-y-6">
+      {/* Departments Section */}
+      <div>
+        <h2 className="font-semibold mb-2 text-gray-900 dark:text-gray-100">
+          {t("filters.departments")}
         </h2>
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline" className="w-full justify-between">
-              {selectedRating
-                ? `${selectedRating} ${t("common.andUp")}`
-                : t("filters.ratingAll")}
-              <ChevronDown className="ml-2 h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent className="w-[200px]">
-            <DropdownMenuItem
-              onClick={() => handleRatingClick(null)}
-              className={!selectedRating ? "bg-accent" : ""}
+        <div className="space-y-1">
+          {AVAILABLE_CATEGORIES.map((category) => (
+            <Button
+              key={category}
+              variant={selectedCategory === category ? "default" : "ghost"}
+              className="w-full justify-start"
+              onClick={() => onSelectCategory(category)}
             >
-              {t("filters.ratingAll")}
-            </DropdownMenuItem>
-            {[4, 3, 2, 1].map((rating) => (
-              <DropdownMenuItem
-                key={rating}
-                onClick={() => handleRatingClick(rating)}
-                className={selectedRating === rating ? "bg-accent" : ""}
-              >
-                {"⭐".repeat(rating)} {t("common.andUp")}
-              </DropdownMenuItem>
-            ))}
-          </DropdownMenuContent>
-        </DropdownMenu>
+              {t(`categories.${category}`)}
+            </Button>
+          ))}
+        </div>
       </div>
-    </div>
+
+      {/* Price Range Section */}
+      <div>
+        <h2 className="font-semibold mb-2 text-gray-900 dark:text-gray-100">
+          {t("filters.price")}
+        </h2>
+        <div className="space-y-1">
+          {priceRanges.map((range, index) => (
+            <Button
+              key={index}
+              variant="ghost"
+              className="w-full justify-start"
+              onClick={() => onPriceRangeChange(range)}
+            >
+              {range.label}
+            </Button>
+          ))}
+        </div>
+      </div>
+    </aside>
   );
-}
+};
 
 export default Sidebar;

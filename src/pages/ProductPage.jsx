@@ -28,20 +28,6 @@ const ProductPage = () => {
   if (loading) return <div className="p-4">Loading...</div>;
   if (!product) return <div className="p-4">Product not found</div>;
 
-  // Generate rating stars
-  const renderRatingStars = (rating) => {
-    return [...Array(5)].map((_, index) => (
-      <Star
-        key={index}
-        className={`w-5 h-5 ${
-          index < rating
-            ? "text-yellow-400 fill-yellow-400"
-            : "text-gray-400 dark:text-gray-600"
-        }`}
-      />
-    ));
-  };
-
   return (
     <div className="container mx-auto px-4 py-8">
       {/* Breadcrumb */}
@@ -57,7 +43,9 @@ const ProductPage = () => {
           to={`/category/${product.category}`}
           className="text-blue-600 dark:text-blue-400 hover:opacity-80"
         >
-          {t(`categories.${product.category}`)}
+          {t(
+            `categories.${product.category === "all" ? "all" : product.category}`
+          )}
         </Link>
         <ChevronRight className="mx-2 w-4 h-4 text-gray-500 dark:text-gray-400" />
         <span className="text-gray-900 dark:text-gray-100 font-medium">
@@ -99,12 +87,6 @@ const ProductPage = () => {
             <h1 className="text-4xl font-bold mb-2 text-gray-900 dark:text-gray-100">
               {isEnglish ? product.nameEn : product.name}
             </h1>
-            <div className="flex items-center gap-2 mb-4">
-              <div className="flex">{renderRatingStars(product.rating)}</div>
-              <span className="text-gray-700 dark:text-gray-300 font-medium">
-                ({product.reviews || 0} {t("common.reviews")})
-              </span>
-            </div>
           </div>
 
           <div className="border-t border-b border-gray-200 dark:border-gray-700 py-4">

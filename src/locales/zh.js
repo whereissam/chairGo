@@ -30,6 +30,7 @@ export default {
     home: "首页",
     admin: "管理",
     cart: "购物车",
+    allProducts: "全部商品",
   },
   categories: {
     all: "全部商品",

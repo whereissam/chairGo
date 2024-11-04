@@ -14,9 +14,21 @@ import SearchBar from "../common/SearchBar";
 import { fuzzySearch } from "../../lib/fuzzySearch";
 import { Link } from "react-router-dom";
 
+// Keep the categories constant
+const AVAILABLE_CATEGORIES = [
+  "all",
+  "office",
+  "living",
+  "dining",
+  "bedroom",
+  "outdoor",
+  "kids",
+  "storage",
+  "accent",
+];
+
 function ProductListingLayout({
   products,
-  categories,
   initialCategory = "all",
   onCategoryChange,
 }) {
@@ -81,7 +93,7 @@ function ProductListingLayout({
     }
 
     // Apply category filter
-    if (selectedCategory !== "all") {
+    if (selectedCategory && selectedCategory !== "all") {
       result = result.filter(
         (product) => product.category === selectedCategory
       );
@@ -95,28 +107,28 @@ function ProductListingLayout({
       );
     }
 
-    // Apply rating filter
+    // Comment out rating filter
+    /*
     if (selectedRating) {
       result = result.filter((product) => product.rating >= selectedRating);
     }
+    */
 
-    // Apply sorting
-    if (!searchQuery) {
-      // Only apply regular sorting if not searching
-      result = [...result].sort((a, b) => {
-        switch (selectedSort.key) {
-          case "priceLowToHigh":
-            return a.price - b.price;
-          case "priceHighToLow":
-            return b.price - a.price;
-          case "newest":
-            return new Date(b.createdAt) - new Date(a.createdAt);
-          case "featured":
-          default:
-            return b.rating - a.rating;
-        }
-      });
-    }
+    // Modify the featured sort to not use rating
+    result = [...result].sort((a, b) => {
+      switch (selectedSort.key) {
+        case "priceLowToHigh":
+          return a.price - b.price;
+        case "priceHighToLow":
+          return b.price - a.price;
+        case "newest":
+          return new Date(b.createdAt) - new Date(a.createdAt);
+        case "featured":
+        default:
+          // return b.rating - a.rating; // Comment out rating-based sorting
+          return 0; // Default to no specific sorting for featured
+      }
+    });
 
     setFilteredProducts(result);
   }, [
@@ -124,18 +136,17 @@ function ProductListingLayout({
     searchQuery,
     selectedCategory,
     priceRange,
-    selectedRating,
+    // selectedRating, // Remove from dependencies
     selectedSort,
   ]);
 
   return (
     <div className="flex gap-6">
       <Sidebar
-        categories={categories}
+        categories={AVAILABLE_CATEGORIES}
         selectedCategory={selectedCategory}
         onSelectCategory={handleCategoryChange}
         onPriceRangeChange={setPriceRange}
-        onRatingChange={setSelectedRating}
       />
 
       <div className="flex-1">
