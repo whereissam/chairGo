@@ -1,5 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { Button } from "../ui/button";
+import { convertPrice, formatCurrency } from "../../utils/currency";
 
 const AVAILABLE_CATEGORIES = [
   "all",
@@ -19,27 +20,29 @@ const Sidebar = ({
   onSelectCategory,
   onPriceRangeChange,
 }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
-  const priceRanges = [
-    { label: t("filters.priceRanges.all"), min: 0, max: Infinity },
-    { label: t("filters.priceRanges.underHundred"), min: 0, max: 100 },
-    {
-      label: t("filters.priceRanges.hundredToTwoHundred"),
-      min: 100,
-      max: 200,
-    },
-    {
-      label: t("filters.priceRanges.twoHundredToFiveHundred"),
-      min: 200,
-      max: 500,
-    },
-    {
-      label: t("filters.priceRanges.overFiveHundred"),
-      min: 500,
-      max: Infinity,
-    },
-  ];
+  const getPriceRanges = () => {
+    const ranges = [
+      { min: 0, max: Infinity },
+      { min: 0, max: 3000 },
+      { min: 3000, max: 6000 },
+      { min: 6000, max: 15000 },
+      { min: 15000, max: Infinity },
+    ];
+
+    return ranges.map((range, index) => ({
+      ...range,
+      label:
+        index === 0
+          ? t("filters.priceRanges.all")
+          : range.max === Infinity
+            ? `${formatCurrency(range.min, i18n.language)} ${t("filters.priceRanges.andUp")}`
+            : `${formatCurrency(range.min, i18n.language)} - ${formatCurrency(range.max, i18n.language)}`,
+    }));
+  };
+
+  const priceRanges = getPriceRanges();
 
   return (
     <aside className="w-64 space-y-6">

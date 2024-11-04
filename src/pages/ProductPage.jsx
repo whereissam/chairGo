@@ -2,8 +2,9 @@ import { useParams, Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useProducts } from "../context/ProductContext";
 import { useTranslation } from "react-i18next";
-import { ChevronRight, Star } from "lucide-react";
+import { ChevronRight } from "lucide-react";
 import { useCart } from "../context/CartContext";
+import { formatCurrency } from "../utils/currency";
 
 /**
  * Product detail page component that displays detailed information about a specific product
@@ -93,11 +94,11 @@ const ProductPage = () => {
 
           <div className="border-t border-b border-gray-200 dark:border-gray-700 py-4">
             <p className="text-4xl font-bold text-blue-600 dark:text-blue-400">
-              ¥{product.price.toFixed(2)}
+              {formatCurrency(product.price, i18n.language)}
             </p>
             {product.oldPrice && (
               <p className="text-gray-500 dark:text-gray-400 line-through">
-                ¥{product.oldPrice.toFixed(2)}
+                {formatCurrency(product.oldPrice, i18n.language)}
               </p>
             )}
           </div>

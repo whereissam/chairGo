@@ -3,6 +3,7 @@ import { X, Plus, Minus, ShoppingBag } from "lucide-react";
 import { useCart } from "../../context/CartContext";
 import { Button } from "../ui/button";
 import { useNavigate } from "react-router-dom";
+import { formatCurrency } from "../../utils/currency";
 
 const CartSidebar = () => {
   const { t, i18n } = useTranslation();
@@ -71,7 +72,7 @@ const CartSidebar = () => {
                       {isEnglish ? item.nameEn : item.name}
                     </h3>
                     <p className="text-blue-600 dark:text-blue-400">
-                      ¥{item.price.toFixed(2)}
+                      {formatCurrency(item.price, i18n.language)}
                     </p>
                     <div className="flex items-center gap-2 mt-2">
                       <button
@@ -109,7 +110,7 @@ const CartSidebar = () => {
             <div className="border-t dark:border-gray-700 p-4 space-y-4">
               <div className="flex justify-between text-lg font-semibold">
                 <span>{t("cart.total")}</span>
-                <span>¥{getTotal().toFixed(2)}</span>
+                <span>{formatCurrency(getTotal(), i18n.language)}</span>
               </div>
               <Button className="w-full py-6 text-lg" onClick={handleCheckout}>
                 {t("cart.checkout")}

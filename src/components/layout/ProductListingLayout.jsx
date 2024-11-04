@@ -14,6 +14,7 @@ import SearchBar from "../common/SearchBar";
 import { fuzzySearch } from "../../lib/fuzzySearch";
 import { Link } from "react-router-dom";
 import { useCart } from "../../context/CartContext";
+import { convertPrice } from "../../utils/currency";
 
 // Keep the categories constant
 const AVAILABLE_CATEGORIES = [
@@ -33,7 +34,7 @@ function ProductListingLayout({
   initialCategory = "all",
   onCategoryChange,
 }) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState(initialCategory);
   const [priceRange, setPriceRange] = useState(null);
@@ -104,10 +105,12 @@ function ProductListingLayout({
 
     // Apply price range filter
     if (priceRange) {
-      result = result.filter(
-        (product) =>
-          product.price >= priceRange.min && product.price <= priceRange.max
-      );
+      result = result.filter((product) => {
+        const convertedPrice = convertPrice(product.price, i18n.language);
+        const convertedMin = convertPrice(priceRange.min, i18n.language);
+        const convertedMax = convertPrice(priceRange.max, i18n.language);
+        return convertedPrice >= convertedMin && convertedPrice <= convertedMax;
+      });
     }
 
     // Comment out rating filter

@@ -4,6 +4,7 @@ import { useTheme } from "../../context/ThemeContext";
 import { useTranslation } from "react-i18next";
 import { useLanguage } from "../../context/LanguageContext";
 import { useCart } from "../../context/CartContext";
+import { formatCurrency } from "../../utils/currency";
 
 function ProductGrid({ products, children }) {
   const { theme } = useTheme();
@@ -45,7 +46,7 @@ function ProductGrid({ products, children }) {
                   {isEnglish ? product.nameEn : product.name}
                 </h3>
                 <p className="text-gray-600 dark:text-gray-400">
-                  ¥{product.price.toFixed(2)}
+                  {formatCurrency(product.price, i18n.language)}
                 </p>
               </Link>
               <button

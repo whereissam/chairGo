@@ -3,6 +3,7 @@ import { useCart } from "../context/CartContext";
 import { Plus, Minus, X } from "lucide-react";
 import { Button } from "../components/ui/button";
 import { Link } from "react-router-dom";
+import { formatCurrency } from "../utils/currency";
 
 const CartPage = () => {
   const { t, i18n } = useTranslation();
@@ -39,8 +40,17 @@ const CartPage = () => {
           {cart.map((item) => (
             <div
               key={item.id}
-              className="flex gap-4 p-4 bg-white dark:bg-gray-800 rounded-lg shadow"
+              className="relative flex gap-4 p-4 bg-white dark:bg-gray-800 rounded-lg shadow"
             >
+              {/* Remove button - moved to top right */}
+              <button
+                onClick={() => removeFromCart(item.id)}
+                className="absolute top-2 right-2 p-2 text-gray-500 hover:text-red-500 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full"
+                aria-label={t("cart.remove")}
+              >
+                <X className="h-4 w-4" />
+              </button>
+
               <Link to={`/product/${item.id}`} className="shrink-0">
                 <img
                   src={item.images?.[0] || item.image}
@@ -55,7 +65,7 @@ const CartPage = () => {
                   </h3>
                 </Link>
                 <p className="text-blue-600 dark:text-blue-400 mt-1">
-                  ¥{item.price.toFixed(2)}
+                  {formatCurrency(item.price, i18n.language)}
                 </p>
                 {item.inStock ? (
                   <p className="text-green-600 dark:text-green-400 text-sm mt-1">
@@ -81,12 +91,6 @@ const CartPage = () => {
                   >
                     <Plus className="h-4 w-4" />
                   </button>
-                  <button
-                    onClick={() => removeFromCart(item.id)}
-                    className="ml-auto p-2 text-gray-500 hover:text-red-500 hover:bg-gray-100 dark:hover:bg-gray-700 rounded"
-                  >
-                    <X className="h-4 w-4" />
-                  </button>
                 </div>
               </div>
             </div>
@@ -103,7 +107,7 @@ const CartPage = () => {
             <div className="space-y-2 mb-4">
               <div className="flex justify-between text-gray-600 dark:text-gray-400">
                 <span>{t("cart.subtotal")}</span>
-                <span>¥{getTotal().toFixed(2)}</span>
+                <span>{formatCurrency(getTotal(), i18n.language)}</span>
               </div>
               <div className="flex justify-between text-gray-600 dark:text-gray-400">
                 <span>{t("cart.shipping")}</span>
@@ -114,7 +118,7 @@ const CartPage = () => {
             <div className="border-t dark:border-gray-700 pt-4 mb-6">
               <div className="flex justify-between text-lg font-semibold text-gray-900 dark:text-gray-100">
                 <span>{t("cart.total")}</span>
-                <span>¥{getTotal().toFixed(2)}</span>
+                <span>{formatCurrency(getTotal(), i18n.language)}</span>
               </div>
             </div>
 
