@@ -4,7 +4,7 @@ export default {
     inStock: "In Stock",
     outOfStock: "Out of Stock",
     addToCart: "Add to Cart",
-    buyNow: "Buy Now",
+    shopNow: "Shop Now",
     sortBy: "Sort by",
     featured: "Featured",
     priceLowToHigh: "Price: Low to High",
@@ -19,6 +19,7 @@ export default {
     dimensions: "Dimensions",
     weight: "Weight",
     color: "Color",
+    learnMore: "Learn More",
   },
   nav: {
     furnitureStore: "Furniture Store",
@@ -58,4 +59,15 @@ export default {
     aboutItem: "About this item",
     specifications: "Specifications",
   },
+  cart: {
+    empty: "Your cart is empty",
+    total: "Total",
+    checkout: "Checkout",
+    remove: "Remove",
+    orderSummary: "Order Summary",
+    subtotal: "Subtotal",
+    shipping: "Shipping",
+    freeShipping: "Free",
+    proceedToCheckout: "Proceed to Checkout",
+  }
 }; 

@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { useProducts } from "../context/ProductContext";
 import { useTranslation } from "react-i18next";
 import { ChevronRight, Star } from "lucide-react";
+import { useCart } from "../context/CartContext";
 
 /**
  * Product detail page component that displays detailed information about a specific product
@@ -14,6 +15,7 @@ const ProductPage = () => {
   const { t, i18n } = useTranslation();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
+  const { addToCart } = useCart();
 
   const isEnglish = i18n.language === "en";
 
@@ -162,7 +164,10 @@ const ProductPage = () => {
           {/* Add to Cart Section */}
           <div className="space-y-4">
             <div className="flex items-center gap-4">
-              <button className="bg-blue-600 dark:bg-blue-500 text-white px-8 py-4 rounded-lg hover:opacity-90 transition-colors w-full text-lg font-semibold">
+              <button
+                className="bg-blue-600 dark:bg-blue-500 text-white px-8 py-4 rounded-lg hover:opacity-90 transition-colors w-full text-lg font-semibold"
+                onClick={() => addToCart(product)}
+              >
                 {t("common.addToCart")}
               </button>
             </div>

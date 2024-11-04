@@ -13,6 +13,7 @@ import ProductGrid from "../home/ProductGrid";
 import SearchBar from "../common/SearchBar";
 import { fuzzySearch } from "../../lib/fuzzySearch";
 import { Link } from "react-router-dom";
+import { useCart } from "../../context/CartContext";
 
 // Keep the categories constant
 const AVAILABLE_CATEGORIES = [
@@ -47,6 +48,8 @@ function ProductListingLayout({
   ];
 
   const [selectedSort, setSelectedSort] = useState(sortOptions[0]);
+
+  const { addToCart } = useCart();
 
   // Handle category change
   const handleCategoryChange = (category) => {
@@ -179,24 +182,7 @@ function ProductListingLayout({
           </div>
         </div>
 
-        <ProductGrid products={filteredProducts}>
-          {(product) => (
-            <div className="group cursor-pointer">
-              <Link
-                to={`/product/${product.id}`}
-                className="block hover:opacity-80"
-              >
-                <img
-                  src={product.image}
-                  alt={product.name}
-                  className="w-full h-48 object-cover rounded-lg"
-                />
-                <h3 className="mt-2 text-lg font-semibold">{product.name}</h3>
-                <p className="text-gray-600">${product.price}</p>
-              </Link>
-            </div>
-          )}
-        </ProductGrid>
+        <ProductGrid products={filteredProducts} />
       </div>
     </div>
   );

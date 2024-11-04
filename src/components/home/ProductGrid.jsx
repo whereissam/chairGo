@@ -3,11 +3,14 @@ import { Button } from "../ui/button";
 import { useTheme } from "../../context/ThemeContext";
 import { useTranslation } from "react-i18next";
 import { useLanguage } from "../../context/LanguageContext";
+import { useCart } from "../../context/CartContext";
 
-function ProductGrid({ products }) {
+function ProductGrid({ products, children }) {
   const { theme } = useTheme();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { currentLanguage } = useLanguage();
+  const { addToCart } = useCart();
+  const isEnglish = i18n.language === "en";
 
   const getLocalizedContent = (content, contentEn) => {
     return currentLanguage === "zh" ? content : contentEn;
@@ -24,46 +27,35 @@ function ProductGrid({ products }) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
       {products.map((product) => (
-        <div
-          key={product.id}
-          className="bg-card text-card-foreground rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow border border-border"
-        >
-          <Link to={`/product/${product.id}`}>
-            <div className="aspect-square overflow-hidden">
-              <img
-                src={product.images[0]}
-                alt={getLocalizedContent(product.name, product.nameEn)}
-                className="w-full h-full object-cover hover:scale-105 transition-transform"
-              />
-            </div>
-          </Link>
-          <div className="p-4">
-            <Link
-              to={`/product/${product.id}`}
-              className="text-lg font-medium hover:text-primary line-clamp-2"
-            >
-              {getLocalizedContent(product.name, product.nameEn)}
-            </Link>
-            <div className="mt-2 mb-4">
-              <span className="text-2xl font-bold text-foreground">
-                ${product.price.toFixed(2)}
-              </span>
-            </div>
-            <div className="flex justify-between items-center">
-              <span
-                className={`px-2 py-1 rounded-full text-sm ${
-                  product.inStock
-                    ? "bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-100"
-                    : "bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-100"
-                }`}
+        <div key={product.id} className="group">
+          {children ? (
+            children(product)
+          ) : (
+            <div>
+              <Link
+                to={`/product/${product.id}`}
+                className="block hover:opacity-80"
               >
-                {t(product.inStock ? "common.inStock" : "common.outOfStock")}
-              </span>
-              <Button size="sm" disabled={!product.inStock}>
+                <img
+                  src={product.images?.[0] || product.image}
+                  alt={isEnglish ? product.nameEn : product.name}
+                  className="w-full h-48 object-cover rounded-lg"
+                />
+                <h3 className="mt-2 text-lg font-semibold">
+                  {isEnglish ? product.nameEn : product.name}
+                </h3>
+                <p className="text-gray-600 dark:text-gray-400">
+                  ¥{product.price.toFixed(2)}
+                </p>
+              </Link>
+              <button
+                onClick={() => addToCart(product)}
+                className="mt-2 w-full bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+              >
                 {t("common.addToCart")}
-              </Button>
+              </button>
             </div>
-          </div>
+          )}
         </div>
       ))}
     </div>

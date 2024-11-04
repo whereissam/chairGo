@@ -1,15 +1,27 @@
 import { Button } from "../ui/button";
 import { useTranslation } from "react-i18next";
 import { useLanguage } from "../../context/LanguageContext";
+import { useCart } from "../../context/CartContext";
+import { useNavigate } from "react-router-dom";
 
 function FeaturedProduct({ product }) {
   const { t } = useTranslation();
   const { currentLanguage } = useLanguage();
+  const { addToCart } = useCart();
+  const navigate = useNavigate();
 
   if (!product) return null;
 
   const getLocalizedContent = (content, contentEn) => {
     return currentLanguage === "zh" ? content : contentEn;
+  };
+
+  const handleShopNow = () => {
+    addToCart(product);
+  };
+
+  const handleLearnMore = () => {
+    navigate(`/category/${product.category}`);
   };
 
   return (
@@ -30,10 +42,15 @@ function FeaturedProduct({ product }) {
               {getLocalizedContent(product.description, product.descriptionEn)}
             </p>
             <div className="space-x-4">
-              <Button size="lg" variant="default">
+              <Button size="lg" variant="default" onClick={handleShopNow}>
                 {t("common.shopNow")}
               </Button>
-              <Button size="lg" variant="outline" className="bg-white/10">
+              <Button
+                size="lg"
+                variant="outline"
+                className="bg-white/10"
+                onClick={handleLearnMore}
+              >
                 {t("common.learnMore")}
               </Button>
             </div>

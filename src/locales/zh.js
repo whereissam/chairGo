@@ -15,7 +15,7 @@ export default {
     freeDelivery: "免费配送",
     rating: "评分",
     reviews: "条评论",
-    shopNow: "立即购买",
+    shopNow: "立即选购",
     learnMore: "了解更多",
     noProductsFound: "未找到产品",
     andUp: "及以上",
@@ -71,5 +71,16 @@ export default {
     departments: "商品分类",
     price: "价格筛选",
     customerReview: "顾客评价",
+  },
+  cart: {
+    empty: "购物车是空的",
+    total: "总计",
+    checkout: "结算",
+    remove: "删除",
+    orderSummary: "订单摘要",
+    subtotal: "小计",
+    shipping: "运费",
+    freeShipping: "免费",
+    proceedToCheckout: "前往结算",
   }
 }; 
