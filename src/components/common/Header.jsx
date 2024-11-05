@@ -27,16 +27,24 @@ function Header() {
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
   return (
-    <header className="bg-background border-b border-border sticky top-0 z-50">
-      <nav className="container mx-auto px-4 py-4">
-        <div className="flex justify-between items-center">
-          {/* Logo */}
-          <Link
-            to="/"
-            className="text-xl sm:text-2xl font-bold text-foreground"
-          >
-            {t("nav.furnitureStore")}
-          </Link>
+    <header>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-16">
+          {/* Logo and Title */}
+          <div className="flex items-center space-x-2">
+            <Link to="/" className="flex items-center gap-2" aria-label="Home">
+              <img
+                src="/image/brandLogo.svg"
+                alt="Company Logo"
+                className="h-12 w-auto"
+              />
+              <img
+                src="/image/brandName.svg"
+                alt="Company Logo"
+                className="h-8 w-auto dark:bg-white"
+              />
+            </Link>
+          </div>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-6">
@@ -207,7 +215,7 @@ function Header() {
             </div>
           </div>
         )}
-      </nav>
+      </div>
     </header>
   );
 }

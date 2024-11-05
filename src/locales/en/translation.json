@@ -1,0 +1,28 @@
+{
+  "nav": {
+    // ... existing nav translations
+  },
+  "footer": {
+    "customerService": "Customer Service",
+    "shoppingGuide": "Shopping Guide",
+    "careInstructions": "Care Instructions",
+    "cashOnDelivery": "Cash on Delivery",
+    "terms": "Terms & Conditions",
+    "returnPolicy": "Return Policy",
+    "faq": "FAQ",
+    "contactUs": "Contact Us",
+    "email": "Email",
+    "phone": "Phone",
+    "businessHours": "Business Hours",
+    "followUs": "Follow Us",
+    "allRightsReserved": "All Rights Reserved",
+    
+    "shoppingGuideContent": {
+      "title": "Shopping Guide",
+      "step1": "Browse Products: Choose your favorite items",
+      "step2": "Add to Cart: Click the 'Add to Cart' button",
+      "step3": "Checkout: Select payment method and complete order",
+      "step4": "Wait for Delivery: We'll arrange shipping ASAP"
+    }
+  }
+} 

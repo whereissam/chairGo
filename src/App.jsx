@@ -14,6 +14,12 @@ import { LanguageProvider } from "./context/LanguageContext";
 import { CartProvider } from "./context/CartContext";
 import { CheckoutForm } from "./components/checkout/CheckoutForm";
 import { Toaster } from "react-hot-toast";
+import ShoppingGuide from "./pages/ShoppingGuide";
+import CareInstructions from "./pages/CareInstructions";
+import PaymentDelivery from "./pages/PaymentDelivery";
+import Terms from "./pages/Terms";
+import ReturnPolicy from "./pages/ReturnPolicy";
+import FAQ from "./pages/FAQ";
 
 function App() {
   return (
@@ -38,6 +44,18 @@ function App() {
                     <Route path="/cart" element={<CartPage />} />
                     <Route path="/about" element={<AboutPage />} />
                     <Route path="/checkout" element={<CheckoutForm />} />
+                    <Route path="/shopping-guide" element={<ShoppingGuide />} />
+                    <Route
+                      path="/care-instructions"
+                      element={<CareInstructions />}
+                    />
+                    <Route
+                      path="/payment-delivery"
+                      element={<PaymentDelivery />}
+                    />
+                    <Route path="/terms" element={<Terms />} />
+                    <Route path="/return-policy" element={<ReturnPolicy />} />
+                    <Route path="/faq" element={<FAQ />} />
                   </Routes>
                 </main>
                 <Footer />
