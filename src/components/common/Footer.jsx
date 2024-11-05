@@ -11,11 +11,13 @@ function Footer() {
           {/* Logo and Company Info */}
           <div className="space-y-4">
             <Link to="/" className="flex items-center space-x-2">
-              <img
-                src="/image/chairGoLogo.webp"
-                alt="ChairGo Logo"
-                className="h-12 w-auto"
-              />
+              <div className="rounded-full overflow-hidden">
+                <img
+                  src="/image/chairGoLogo.webp"
+                  alt="ChairGo Logo"
+                  className="h-40 w-auto"
+                />
+              </div>
             </Link>
             <p className="text-sm text-muted-foreground mt-4">
               ChairGo - Your trusted source for quality chairs and furniture.
@@ -72,13 +74,13 @@ function Footer() {
             <h3 className="text-lg font-semibold">{t("footer.contactUs")}</h3>
             <div className="space-y-2">
               <p className="text-sm text-muted-foreground">
-                {t("footer.email")}: contact@chairgo.com
+                {t("footer.email")}: chairgo168@gmail.com
               </p>
               <p className="text-sm text-muted-foreground">
-                {t("footer.phone")}: (02) 1234-5678
+                {t("footer.phone")}: (04) 2652-5165
               </p>
               <p className="text-sm text-muted-foreground">
-                {t("footer.businessHours")}: 9:00-18:00
+                {t("footer.businessHours")}: 11:00-20:00
               </p>
             </div>
           </div>

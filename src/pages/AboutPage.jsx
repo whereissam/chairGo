@@ -67,7 +67,14 @@ const AboutPage = () => {
             <ul className="space-y-2 sm:space-y-3 text-sm sm:text-base text-muted-foreground">
               <li className="flex items-center">
                 <span className="mr-2">📍</span>
-                {t("about.address")}
+                <a
+                  href="https://maps.app.goo.gl/JmUj7R9uAPMnZ9y99"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:underline"
+                >
+                  {t("about.address")}
+                </a>
               </li>
               <li className="flex items-center">
                 <span className="mr-2">📞</span>
