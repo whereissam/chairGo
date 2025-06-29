@@ -1,0 +1,14 @@
+name = "chairgo-api"
+main = "src/index.ts"
+compatibility_date = "2024-12-29"
+
+[vars]
+ENVIRONMENT = "development"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "chairgo-database"
+database_id = ""
+
+[build]
+command = "npm run build"
