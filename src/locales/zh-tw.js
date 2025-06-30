@@ -75,8 +75,12 @@ export default {
     price: "價格篩選",
     customerReview: "顧客評價",
   },
-  cart: {
-    empty: "購物車是空的",
+  cart: { 
+    empty: {
+      title: "購物車是空的",
+      description: "看起來你還沒有添加任何東西到購物車。開始探索我們的產品，找到你喜歡的東西！",
+      startShopping: "開始購物"
+    },
     total: "總計",
     checkout: "結算",
     remove: "刪除",
@@ -320,6 +324,10 @@ export default {
     hero: {
       title: "打造完美的居家空間",
       description: "探索我們精選的高品質椅子和家具系列",
-    }
+    },
+  },
+  theme: {
+    lightMode: "淺色模式",
+    darkMode: "深色模式",
   }
 }; 

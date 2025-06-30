@@ -1,4 +1,4 @@
-import{d as t,e as i}from"./index-DOtWuEAU.js";import{j as n}from"./ui-BhTD1AZt.js";import{r as a}from"./router-CRNUPkV4.js";/**
+import{d as t,e as i}from"./index-CdTGuFFa.js";import{j as n}from"./ui-CkkdHTaZ.js";import{r as a}from"./router-D7RsVd5n.js";/**
  * @license lucide-react v0.525.0 - ISC
  *
  * This source code is licensed under the ISC license.

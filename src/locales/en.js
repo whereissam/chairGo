@@ -62,7 +62,11 @@ export default {
     specifications: "Specifications",
   },
   cart: {
-    empty: "Your cart is empty",
+    empty: {
+      title: "Your Cart is Empty",
+      description: "Looks like you haven't added anything to your cart yet. Start exploring our products and find something you love!",
+      startShopping: "Start Shopping"
+    },
     total: "Total",
     checkout: "Checkout",
     remove: "Remove",
@@ -302,6 +306,10 @@ export default {
       formSubmitting: "Submitting...",
       formSuccess: "Question submitted successfully!",
       formError: "Error submitting question. Please try again.",
-    }
+    },
+  },
+  theme: {
+    lightMode: "Light Mode",
+    darkMode: "Dark Mode",
   }
 }; 

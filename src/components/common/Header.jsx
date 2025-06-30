@@ -44,7 +44,7 @@ function Header() {
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 header-container">
-      <div className="absolute inset-0 bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl border-b border-gray-200 dark:border-gray-700 shadow-lg"></div>
+      <div className="absolute inset-0 bg-nav backdrop-blur-xl border-b border-border shadow-lg"></div>
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
           {/* Modern Animated Logo */}
@@ -52,7 +52,7 @@ function Header() {
             <Link to="/" className="flex items-center gap-3 group" aria-label="Home">
               <div className="relative">
                 <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full blur-lg opacity-30 group-hover:opacity-60 transition-opacity duration-300"></div>
-                <div className="relative bg-white dark:bg-gray-800 rounded-full p-2 shadow-lg border border-gray-200 dark:border-gray-700 group-hover:shadow-xl transition-all duration-300 group-hover:scale-110">
+                <div className="relative bg-card rounded-full p-2 shadow-lg border border-border group-hover:shadow-xl transition-all duration-300 group-hover:scale-110">
                   <img
                     src="/image/brandLogo.svg"
                     alt="Company Logo"
@@ -61,7 +61,7 @@ function Header() {
                 </div>
               </div>
               <div className="hidden sm:block">
-                <span className="text-xl md:text-2xl font-bold bg-gradient-to-r from-gray-900 via-blue-800 to-purple-800 dark:from-white dark:via-blue-200 dark:to-purple-200 bg-clip-text text-transparent">
+                <span className="text-xl md:text-2xl font-bold text-foreground">
                   ChairGo
                 </span>
                 <div className="h-0.5 bg-gradient-to-r from-blue-600 to-purple-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></div>
@@ -71,17 +71,17 @@ function Header() {
 
           {/* Desktop Floating Menu */}
           <div className="hidden lg:flex items-center">
-            <div className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-md rounded-full px-1 py-1 shadow-lg border border-gray-200 dark:border-gray-700">
+            <div className="bg-surface backdrop-blur-md rounded-full px-1 py-1 shadow-lg border border-border">
               <div className="flex items-center space-x-1">
                 {[
                   { to: '/', label: t("nav.home"), icon: '🏠' },
-                  { to: '/products', label: 'Products', icon: '🪑' },
+                  { to: '/products', label: t("nav.products"), icon: '🪑' },
                   { to: '/about', label: t("nav.about"), icon: '💫' }
                 ].map((item, index) => (
                   <Link
                     key={item.to}
                     to={item.to}
-                    className="nav-item relative px-4 py-2 rounded-full text-gray-500 dark:text-gray-400 hover:text-white transition-all duration-300 group"
+                    className="nav-item relative px-4 py-2 rounded-full text-nav-foreground hover:text-white transition-all duration-300 group"
                   >
                     <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-blue-600 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                     <div className="relative flex items-center space-x-2">
@@ -158,7 +158,7 @@ function Header() {
                   <Sun className="h-4 w-4" />
                 )}
                 <span className="text-sm font-medium">
-                  {theme === "light" ? "Dark" : "Light"}
+                {theme === "light" ? t("theme.darkMode") : t("theme.lightMode")}
                 </span>
               </Button>
             </div>
@@ -188,19 +188,24 @@ function Header() {
         </div>
 
         {/* Animated Mobile Menu */}
-        <div className={`lg:hidden overflow-hidden transition-all duration-500 ease-out ${isMenuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}>
-          <div className="py-6 bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl rounded-2xl mt-4 shadow-xl border border-gray-200 dark:border-gray-700">
+        <div className={`lg:hidden overflow-hidden transition-all duration-500 ease-out ${isMenuOpen ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'}`}>
+          <div className="py-6 bg-card/95 backdrop-blur-xl rounded-2xl mt-4 shadow-xl border border-border">
             <div className="flex flex-col space-y-2 px-4">
               {[
                 { to: '/', label: t("nav.home"), icon: '🏠' },
-                { to: '/products', label: 'Products', icon: '🪑' },
+                { to: '/products', label: t("nav.products"), icon: '🪑' },
                 { to: '/about', label: t("nav.about"), icon: '💫' },
-                { to: '/cart', label: `${t("nav.cart")} (${cart.length})`, icon: '🛒' }
+                { to: '/cart', label: `${t("nav.cart")} (${cart.length})`, icon: '🛒' },
+                { to: '/admin', label: t("nav.admin"), icon: '⚡' }
               ].map((item, index) => (
                 <Link
                   key={item.to}
                   to={item.to}
-                  className="flex items-center space-x-3 p-3 rounded-xl hover:bg-gradient-to-r hover:from-blue-600 hover:to-purple-600 hover:text-white transition-all duration-300 group"
+                  className={`flex items-center space-x-3 p-3 rounded-xl transition-all duration-300 group ${
+                    item.to === '/admin' 
+                      ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:from-blue-700 hover:to-purple-700' 
+                      : 'text-nav-foreground hover:bg-gradient-to-r hover:from-blue-600 hover:to-purple-600 hover:text-white'
+                  }`}
                   onClick={toggleMenu}
                   style={{ animationDelay: `${index * 100}ms` }}
                 >
@@ -211,13 +216,13 @@ function Header() {
               ))}
               
               {/* Mobile Language & Theme Controls */}
-              <div className="flex items-center justify-center space-x-4 pt-4 mt-4 border-t border-gray-200 dark:border-gray-700">
+              <div className="flex items-center justify-center space-x-4 pt-4 mt-4 border-t border-border">
                 {/* Mobile Language Picker */}
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button
                       variant="ghost"
-                      className="flex items-center gap-2 px-3 py-2 rounded-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-sm text-gray-700 dark:text-gray-300"
+                      className="flex items-center gap-2 px-3 py-2 rounded-lg bg-surface border border-border shadow-sm text-nav-foreground"
                     >
                       <Globe className="h-4 w-4" />
                       <span className="text-sm font-medium">
@@ -225,7 +230,7 @@ function Header() {
                       </span>
                     </Button>
                   </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end" className="min-w-[140px] bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-lg rounded-lg p-1">
+                  <DropdownMenuContent align="end" className="min-w-[140px] bg-card border border-border shadow-lg rounded-lg p-1">
                     {languages.map((lang) => (
                       <DropdownMenuItem
                         key={lang.code}
@@ -237,7 +242,7 @@ function Header() {
                           "cursor-pointer rounded-md p-2 transition-all duration-200",
                           currentLanguage === lang.code 
                             ? "bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 font-medium" 
-                            : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                            : "text-nav-foreground hover:bg-muted"
                         )}
                       >
                         <div className="flex items-center gap-2">
@@ -256,7 +261,7 @@ function Header() {
                     toggleTheme();
                     toggleMenu();
                   }}
-                  className="flex items-center gap-2 px-3 py-2 rounded-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-sm text-gray-700 dark:text-gray-300"
+                  className="flex items-center gap-2 px-3 py-2 rounded-lg bg-surface border border-border shadow-sm text-nav-foreground"
                 >
                   {theme === "light" ? (
                     <Moon className="h-4 w-4" />
@@ -264,21 +269,9 @@ function Header() {
                     <Sun className="h-4 w-4" />
                   )}
                   <span className="text-sm font-medium">
-                    {theme === "light" ? "Dark" : "Light"}
+                    {theme === "light" ? t("theme.darkMode") : t("theme.lightMode")}
                   </span>
                 </Button>
-              </div>
-              
-              <div className="pt-4 mt-4 border-t border-gray-200 dark:border-gray-700">
-                <Link 
-                  to="/admin"
-                  onClick={toggleMenu}
-                  className="block"
-                >
-                  <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white p-3 rounded-xl text-center font-semibold shadow-lg">
-                    ⚡ {t("nav.admin")} Panel
-                  </div>
-                </Link>
               </div>
             </div>
           </div>

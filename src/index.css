@@ -65,19 +65,19 @@
     /* ChairGo Design System - Dark Theme */
     
     /* Base Colors */
-    --background: 222.2 84% 4.9%;        /* Deep dark background */
+    --background: 220 26% 14%;           /* Dark background */
     --foreground: 210 40% 98%;           /* White text */
     
     /* Surface Colors */
-    --surface: 217.2 32.6% 17.5%;        /* Dark gray surface */
-    --surface-variant: 215 25% 27%;      /* Lighter dark surface */
+    --surface: 220 26% 18%;              /* Dark gray surface */
+    --surface-variant: 220 26% 22%;      /* Lighter dark surface */
     
     /* Card Colors */
-    --card: 217.2 32.6% 17.5%;           /* Dark cards */
+    --card: 220 26% 18%;                 /* Dark cards */
     --card-foreground: 210 40% 98%;      /* White text on cards */
 
     /* Navigation & Popover */
-    --nav: 217.2 32.6% 17.5%;            /* Dark navigation */
+    --nav: 220 26% 16%;                  /* Dark navigation */
     --nav-foreground: 215 20.2% 65.1%;   /* Light gray nav text */
     --popover: 217.2 32.6% 17.5%;
     --popover-foreground: 210 40% 98%;
@@ -118,9 +118,81 @@
  
 @layer base {
   * {
-    @apply border-gray-200 dark:border-gray-700;
+    border-color: hsl(var(--border));
   }
   body {
-    @apply bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-all duration-500;
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+    transition: all 0.5s;
+  }
+}
+
+@layer utilities {
+  /* Border utilities */
+  .border-border {
+    border-color: hsl(var(--border));
+  }
+  .border-input {
+    border-color: hsl(var(--input));
+  }
+  
+  /* Background utilities */
+  .bg-background {
+    background-color: hsl(var(--background));
+  }
+  .bg-surface {
+    background-color: hsl(var(--surface));
+  }
+  .bg-card {
+    background-color: hsl(var(--card));
+  }
+  .bg-nav {
+    background-color: hsl(var(--nav));
+  }
+  .bg-primary {
+    background-color: hsl(var(--primary));
+  }
+  .bg-muted {
+    background-color: hsl(var(--muted));
+  }
+  .bg-accent {
+    background-color: hsl(var(--accent));
+  }
+  .bg-popover {
+    background-color: hsl(var(--popover));
+  }
+  
+  /* Text color utilities */
+  .text-foreground {
+    color: hsl(var(--foreground));
+  }
+  .text-card-foreground {
+    color: hsl(var(--card-foreground));
+  }
+  .text-nav-foreground {
+    color: hsl(var(--nav-foreground));
+  }
+  .text-primary-foreground {
+    color: hsl(var(--primary-foreground));
+  }
+  .text-muted-foreground {
+    color: hsl(var(--muted-foreground));
+  }
+  .text-accent-foreground {
+    color: hsl(var(--accent-foreground));
+  }
+  .text-popover-foreground {
+    color: hsl(var(--popover-foreground));
+  }
+  .text-destructive {
+    color: hsl(var(--destructive));
+  }
+  .text-destructive-foreground {
+    color: hsl(var(--destructive-foreground));
+  }
+  
+  /* Focus ring utilities */
+  .ring-ring {
+    --tw-ring-color: hsl(var(--ring));
   }
 } 

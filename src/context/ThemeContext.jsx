@@ -15,9 +15,11 @@ export function ThemeProvider({ children }) {
 
   useEffect(() => {
     const root = window.document.documentElement;
+    console.log('Theme changing to:', theme);
     root.classList.remove("light", "dark");
     root.classList.add(theme);
     localStorage.setItem("theme", theme);
+    console.log('Root classes after change:', root.className);
   }, [theme]);
 
   const toggleTheme = () => {

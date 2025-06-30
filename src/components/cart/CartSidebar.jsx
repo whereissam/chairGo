@@ -82,7 +82,7 @@ const CartSidebar = () => {
                     {t("nav.cart")} ✨
                   </h2>
                   <p className="text-sm text-muted-foreground">
-                    {cart.length} {cart.length === 1 ? 'item' : 'items'}
+                    {cart.length} {cart.length === 1 ? t("cart.item") : t("cart.items")}
                   </p>
                 </div>
               </div>
@@ -101,7 +101,7 @@ const CartSidebar = () => {
               <div className="text-center py-16">
                 <div className="text-4xl mb-4">🛒</div>
                 <p className="text-gray-500 dark:text-gray-400 mb-4">
-                  Your cart is empty
+                  {t("cart.empty")}
                 </p>
                 <button
                   onClick={() => {
@@ -110,7 +110,7 @@ const CartSidebar = () => {
                   }}
                   className="text-blue-600 hover:text-blue-700 font-medium"
                 >
-                  Start shopping
+                  {t("cart.startShopping")}
                 </button>
               </div>
             ) : (
@@ -177,7 +177,7 @@ const CartSidebar = () => {
               <div className="space-y-4">
                 {/* Total */}
                 <div className="flex justify-between items-center py-2">
-                  <span className="text-gray-600 dark:text-gray-400">Total</span>
+                  <span className="text-gray-600 dark:text-gray-400">{t("cart.total")}</span>
                   <span className="text-xl font-bold bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent">
                     {formatCurrency(getTotal(), i18n.language)}
                   </span>
@@ -196,7 +196,7 @@ const CartSidebar = () => {
                       className="relative w-full bg-gradient-to-r from-green-600 to-blue-600 text-white py-3 rounded-full font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 flex items-center justify-center space-x-2"
                     >
                       <Sparkles className="h-4 w-4" />
-                      <span>Checkout</span>
+                      <span>{t("cart.checkout")}</span>
                       <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
                     </button>
                   </div>
@@ -206,14 +206,14 @@ const CartSidebar = () => {
                     onClick={handleCheckout}
                     className="w-full bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 py-3 rounded-full font-medium hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
                   >
-                    View Full Cart
+                    {t("cart.viewFullCart")}
                   </button>
                 </div>
                 
                 {/* Trust badges */}
                 <div className="flex items-center justify-center space-x-4 text-xs text-gray-500 dark:text-gray-400 pt-2">
-                  <span>🔒 Secure</span>
-                  <span>🚚 Free Shipping</span>
+                  <span>🔒 {t("cart.secure")}</span>
+                  <span>🚚 {t("cart.freeShipping")}</span>
                 </div>
               </div>
             </div>

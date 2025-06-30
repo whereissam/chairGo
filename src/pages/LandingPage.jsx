@@ -550,7 +550,7 @@ export function LandingPage() {
   ]
 
   return (
-    <div className="min-h-screen bg-white dark:bg-gray-900 transition-all duration-500">
+    <div className="h-screen bg-white dark:bg-gray-900 transition-all duration-500 overflow-hidden">
       {/* Modern Animated Navigation */}
       <nav className="fixed top-0 left-0 right-0 z-50 navbar-container">
         <div className="absolute inset-0 bg-white/95 dark:bg-gray-900/95 backdrop-blur-md border-b border-gray-200 dark:border-gray-700 shadow-lg"></div>
@@ -582,7 +582,7 @@ export function LandingPage() {
               <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-full px-1 py-1 shadow-lg border border-gray-200 dark:border-gray-700">
                 <div className="flex items-center space-x-1">
                   {[
-                    { to: '/home', label: 'Home', icon: '🏠' },
+                    { to: '/', label: 'Home', icon: '🏠' },
                     { to: '/products', label: 'Products', icon: '🪑' },
                     { to: '/about', label: 'About', icon: '💫' }
                   ].map((item, index) => (
@@ -646,7 +646,7 @@ export function LandingPage() {
             <div className="py-6 bg-white/90 dark:bg-gray-900/90 backdrop-blur-md rounded-2xl mt-4 shadow-xl border border-gray-200 dark:border-gray-700">
               <div className="flex flex-col space-y-2 px-4">
                 {[
-                  { to: '/home', label: 'Home', icon: '🏠' },
+                  { to: '/', label: 'Home', icon: '🏠' },
                   { to: '/products', label: 'Products', icon: '🪑' },
                   { to: '/about', label: 'About', icon: '💫' },
                   { to: '/cart', label: `Cart (${cart.length})`, icon: '🛒' }
@@ -680,8 +680,12 @@ export function LandingPage() {
         </div>
       </nav>
 
-      {/* Hero Section */}
-      <section ref={heroRef} className="relative h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-blue-50 via-purple-50 to-indigo-100 dark:bg-gradient-to-br dark:from-gray-800 dark:via-gray-900 dark:to-gray-800 pt-20 transition-all duration-500">
+      {/* Horizontal Scroll Container */}
+      <div className="h-screen pt-20 overflow-x-auto overflow-y-hidden">
+        <div className="flex h-full w-max">
+          
+          {/* Section 1: Hero */}
+          <section ref={heroRef} className="w-screen h-full flex items-center justify-center bg-gradient-to-br from-blue-50 via-purple-50 to-indigo-100 dark:bg-gradient-to-br dark:from-gray-800 dark:via-gray-900 dark:to-gray-800 transition-all duration-500 relative overflow-hidden">
         {/* Animated Background Elements */}
         <div className="absolute inset-0 bg-black/5"></div>
         <div className="absolute inset-0 parallax-bg bg-gradient-to-r from-blue-400/10 to-purple-400/10"></div>
@@ -754,10 +758,10 @@ export function LandingPage() {
             </div>
           </div>
         </div>
-      </section>
+          </section>
 
-      {/* Stats Section */}
-      <section ref={statsRef} className="py-12 md:py-20 bg-gray-900 dark:bg-gray-800 text-white stats-bg transition-all duration-500">
+          {/* Section 2: Stats */}
+          <section ref={statsRef} className="w-screen h-full flex items-center justify-center bg-gray-900 dark:bg-gray-800 text-white transition-all duration-500">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
             <div className="text-center">
@@ -778,10 +782,10 @@ export function LandingPage() {
             </div>
           </div>
         </div>
-      </section>
+          </section>
 
-      {/* Featured Products */}
-      <section ref={featuredRef} className="py-12 md:py-20 bg-gray-50 dark:bg-gray-800 transition-all duration-500">
+          {/* Section 3: Featured Products */}
+          <section ref={featuredRef} className="w-screen h-full flex items-center justify-center bg-gray-50 dark:bg-gray-800 transition-all duration-500">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12 md:mb-16 featured-title">
             <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 dark:text-gray-100 mb-3 md:mb-4">

@@ -114,17 +114,17 @@ const CartPage = () => {
               <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-32 h-32 bg-gradient-to-r from-blue-400/20 to-purple-400/20 rounded-full blur-xl"></div>
             </div>
             <h2 className="text-2xl font-semibold mb-4 text-foreground">
-              Your cart is empty
+              {t("cart.empty.title")}
             </h2>
             <p className="text-muted-foreground mb-8 max-w-md mx-auto">
-              Looks like you haven't added any items to your cart yet. Start shopping to fill it up!
+              {t("cart.empty.description")}
             </p>
             <Link to="/products" className="inline-block group">
               <div className="relative">
                 <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full blur-lg opacity-30 group-hover:opacity-50 transition-opacity duration-300"></div>
                 <button className="relative bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-4 rounded-full font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 flex items-center space-x-2">
                   <Sparkles className="h-5 w-5" />
-                  <span>Start Shopping</span>
+                  <span>{t("cart.empty.startShopping")}</span>
                   <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
                 </button>
               </div>
@@ -150,7 +150,7 @@ const CartPage = () => {
             {t("nav.cart")} ({cart.length} items) ✨
           </h1>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            Review your selected items and proceed to checkout when ready
+            {t("cart.reviewItems")}
           </p>
         </div>
 
@@ -213,7 +213,7 @@ const CartPage = () => {
 
                     {/* Quantity Controls */}
                     <div className="flex items-center space-x-4">
-                      <span className="text-sm font-medium text-muted-foreground">Quantity:</span>
+                      <span className="text-sm font-medium text-muted-foreground">{t("cart.quantity")}:</span>
                       <div className="flex items-center bg-muted rounded-full">
                         <button
                           onClick={() => updateQuantity(item.id, item.quantity - 1)}
@@ -233,7 +233,7 @@ const CartPage = () => {
                       <button
                         onClick={() => {/* Add to wishlist functionality */}}
                         className="p-2 text-muted-foreground hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-full transition-all duration-300"
-                        title="Add to Wishlist"
+                        title={t("cart.addToWishlist")}
                       >
                         <Heart className="h-5 w-5" />
                       </button>
@@ -242,7 +242,7 @@ const CartPage = () => {
                     {/* Subtotal */}
                     <div className="mt-4 pt-4 border-t border-border">
                       <div className="flex justify-between items-center">
-                        <span className="text-sm text-muted-foreground">Subtotal:</span>
+                        <span className="text-sm text-muted-foreground">{t("cart.subtotal")}:</span>
                         <span className="text-lg font-bold text-foreground">
                           {formatCurrency(item.price * item.quantity, i18n.language)}
                         </span>
@@ -267,32 +267,32 @@ const CartPage = () => {
                 </div>
               </div>
               <h2 className="text-2xl font-bold mt-4 text-foreground">
-                Order Summary ✨
+                {t("cart.orderSummary")} ✨
               </h2>
             </div>
 
             {/* Summary Details */}
             <div className="space-y-4 mb-6">
               <div className="flex justify-between items-center py-2">
-                <span className="text-gray-600 dark:text-gray-400">Subtotal ({cart.length} items)</span>
+                <span className="text-gray-600 dark:text-gray-400">{t("cart.subtotalItems", { count: cart.length })}</span>
                 <span className="font-semibold text-lg">{formatCurrency(getTotal(), i18n.language)}</span>
               </div>
               
               <div className="flex justify-between items-center py-2">
-                <span className="text-gray-600 dark:text-gray-400">Shipping</span>
+                <span className="text-gray-600 dark:text-gray-400">{t("cart.shipping")}</span>
                 <div className="flex items-center space-x-2">
-                  <span className="text-green-600 dark:text-green-400 font-semibold">FREE 🚚</span>
+                  <span className="text-green-600 dark:text-green-400 font-semibold">{t("cart.freeShipping")} 🚚</span>
                 </div>
               </div>
               
               <div className="flex justify-between items-center py-2">
-                <span className="text-gray-600 dark:text-gray-400">Tax</span>
-                <span className="text-gray-600 dark:text-gray-400">Calculated at checkout</span>
+                <span className="text-gray-600 dark:text-gray-400">{t("cart.tax")}</span>
+                <span className="text-gray-600 dark:text-gray-400">{t("cart.calculatedAtCheckout")}</span>
               </div>
 
               <div className="border-t border-gray-200 dark:border-gray-700 pt-4">
                 <div className="flex justify-between items-center">
-                  <span className="text-xl font-bold text-gray-900 dark:text-gray-100">Total</span>
+                  <span className="text-xl font-bold text-gray-900 dark:text-gray-100">{t("cart.total")}</span>
                   <span className="text-2xl font-bold bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent">
                     {formatCurrency(getTotal(), i18n.language)}
                   </span>
@@ -309,14 +309,14 @@ const CartPage = () => {
                   className="relative w-full bg-gradient-to-r from-green-600 to-blue-600 text-white py-4 rounded-full font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 flex items-center justify-center space-x-2"
                 >
                   <Sparkles className="h-5 w-5" />
-                  <span>Proceed to Checkout</span>
+                  <span>{t("cart.proceedToCheckout")}</span>
                   <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
                 </button>
               </div>
               
               <Link to="/products" className="block">
                 <button className="w-full bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 py-3 rounded-full font-medium hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors">
-                  Continue Shopping
+                  {t("cart.continueShopping")}
                 </button>
               </Link>
             </div>
@@ -326,15 +326,15 @@ const CartPage = () => {
               <div className="flex items-center justify-center space-x-6 text-xs text-gray-500 dark:text-gray-400">
                 <div className="flex items-center space-x-1">
                   <span>🔒</span>
-                  <span>Secure</span>
+                  <span>{t("cart.secure")}</span>
                 </div>
                 <div className="flex items-center space-x-1">
                   <span>🚚</span>
-                  <span>Free Shipping</span>
+                  <span>{t("cart.freeShipping")}</span>
                 </div>
                 <div className="flex items-center space-x-1">
                   <span>↩️</span>
-                  <span>Easy Returns</span>
+                  <span>{t("cart.easyReturns")}</span>
                 </div>
               </div>
             </div>

@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { lazy, Suspense } from "react";
-import { LandingPage } from "./pages/LandingPage";
+import { LandingPageHorizontal as LandingPage } from "./pages/LandingPageHorizontal";
 import Header from "./components/common/Header";
 import Footer from "./components/common/Footer";
 import CartSidebar from "./components/cart/CartSidebar";
@@ -38,8 +38,13 @@ function App() {
               <div className="min-h-screen bg-background">
                 <Toaster position="top-center" />
                 <Routes>
-                  {/* Landing page without header/footer */}
-                  <Route path="/" element={<LandingPage />} />
+                  {/* Landing page with header but no footer */}
+                  <Route path="/" element={
+                    <div className="min-h-screen flex flex-col">
+                      <Header />
+                      <LandingPage />
+                    </div>
+                  } />
                   
                   {/* Admin routes without header/footer */}
                   <Route path="/admin/*" element={
