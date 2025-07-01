@@ -178,6 +178,55 @@ curl http://localhost:8787/api/auth/login \
   -d '{"username":"admin","password":"admin123"}'
 ```
 
+## 🚨 Troubleshooting
+
+### Common Issues
+
+**Frontend not starting:**
+- Ensure Node.js version is 18+ (`node --version`)
+- Clear node_modules and reinstall: `rm -rf node_modules package-lock.json && npm install`
+
+**API deployment fails:**
+- Verify Cloudflare account is properly configured
+- Check wrangler.toml configuration matches your setup
+- Ensure D1 database is created and schema is applied
+
+**Database connection issues:**
+- Verify database ID in wrangler.toml matches your D1 database
+- Run schema again: `wrangler d1 execute chairgo-database --file=./schema.sql`
+
+### Environment Requirements
+
+- **Node.js**: 18.0.0 or higher
+- **npm**: 9.0.0 or higher  
+- **Cloudflare Account**: Required for API deployment
+
+## 📊 Project Structure
+
+```
+chairGo/
+├── api/                    # Cloudflare Workers API
+│   ├── src/               # API source code
+│   ├── schema.sql         # Database schema
+│   └── wrangler.toml      # Cloudflare configuration
+├── public/                # Static assets
+├── src/                   # Frontend source code
+│   ├── components/        # React components
+│   ├── contexts/          # React contexts
+│   ├── locales/          # i18n translations
+│   └── utils/            # Utility functions
+├── package.json          # Frontend dependencies
+└── README.md            # This file
+```
+
+## 🔄 Development Workflow
+
+1. **Frontend Development**: `npm run dev` (runs on http://localhost:5173)
+2. **API Development**: `cd api && npm run dev` (runs on http://localhost:8787)
+3. **Database Changes**: Update schema.sql and run migrations
+4. **Testing**: Run `npm test` in the api directory
+5. **Deployment**: `npm run deploy` in the api directory
+
 ## 📄 License
 
 This project is private and proprietary.
