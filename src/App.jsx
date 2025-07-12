@@ -9,6 +9,7 @@ import { ThemeProvider } from "./context/ThemeContext";
 import { LanguageProvider } from "./context/LanguageContext";
 import { CartProvider } from "./context/CartContext";
 import { AuthProvider } from "./context/AuthContext";
+import { CustomerAuthProvider } from "./context/CustomerAuthContext";
 import { Toaster } from "react-hot-toast";
 import LoadingSpinner from "./components/ui/LoadingSpinner";
 import ErrorBoundary from "./components/ui/ErrorBoundary";
@@ -33,6 +34,8 @@ const PaymentDelivery = lazy(() => import("./pages/PaymentDelivery"));
 const Terms = lazy(() => import("./pages/Terms"));
 const ReturnPolicy = lazy(() => import("./pages/ReturnPolicy"));
 const FAQ = lazy(() => import("./pages/FAQ"));
+const CustomerDashboard = lazy(() => import("./components/customer/CustomerDashboard"));
+const OrderTracking = lazy(() => import("./components/order/OrderTracking"));
 
 function App() {
   return (
@@ -42,7 +45,8 @@ function App() {
           <ProductProvider>
             <CartProvider>
               <AuthProvider>
-                <ClerkAuthWrapper>
+                <CustomerAuthProvider>
+                  <ClerkAuthWrapper>
                   <Router>
               <div className="min-h-screen bg-background">
                 <Toaster position="top-center" />
@@ -89,6 +93,8 @@ function App() {
                               <Route path="/cart" element={<CartPage />} />
                               <Route path="/about" element={<AboutPage />} />
                               <Route path="/checkout" element={<CheckoutForm />} />
+                              <Route path="/account" element={<CustomerDashboard />} />
+                              <Route path="/track-order" element={<OrderTracking />} />
                               <Route path="/shopping-guide" element={<ShoppingGuide />} />
                               <Route
                                 path="/care-instructions"
@@ -113,6 +119,7 @@ function App() {
               </div>
                   </Router>
                 </ClerkAuthWrapper>
+                </CustomerAuthProvider>
               </AuthProvider>
             </CartProvider>
           </ProductProvider>

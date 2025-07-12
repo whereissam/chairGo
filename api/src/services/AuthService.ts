@@ -79,12 +79,12 @@ export class AuthService {
       // Hash password
       const hashedPassword = await bcrypt.hash(password, 12)
 
-      // Create user (default role: admin for this system)
+      // Create user (default role: user for customer registration)
       return await this.userModel.create({
         username,
         email,
         password: hashedPassword,
-        role: 'admin'
+        role: 'user'
       })
     } catch (error) {
       if (error instanceof z.ZodError) {

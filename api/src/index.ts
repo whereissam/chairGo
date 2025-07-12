@@ -4,6 +4,8 @@ import { logger } from 'hono/logger'
 import { authRouter } from './routes/auth'
 import { productRouter } from './routes/products'
 import { adminRouter } from './routes/admin'
+import { ordersRouter } from './routes/orders'
+import { customerRouter } from './routes/customer'
 import { errorHandler } from './middleware/errorHandler'
 
 export interface Env {
@@ -42,6 +44,8 @@ const v1 = new Hono<{ Bindings: Env }>()
 v1.route('/auth', authRouter)
 v1.route('/products', productRouter)
 v1.route('/admin', adminRouter)
+v1.route('/orders', ordersRouter)
+v1.route('/customer', customerRouter)
 
 // Mount versioned API
 app.route('/api/v1', v1)
@@ -50,6 +54,8 @@ app.route('/api/v1', v1)
 app.route('/api/auth', authRouter)
 app.route('/api/products', productRouter)
 app.route('/api/admin', adminRouter)
+app.route('/api/orders', ordersRouter)
+app.route('/api/customer', customerRouter)
 
 // 404 handler
 app.notFound((c) => {

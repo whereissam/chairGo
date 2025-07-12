@@ -1,8 +1,9 @@
 import { Link } from "react-router-dom";
 import { useTheme } from "../../context/ThemeContext";
 import { useLanguage } from "../../context/LanguageContext";
+import { useCustomerAuth } from "../../context/CustomerAuthContext";
 import { useTranslation } from "react-i18next";
-import { Sun, Moon, Globe, Menu, X, ShoppingCart, ArrowRight } from "lucide-react";
+import { Sun, Moon, Globe, Menu, X, ShoppingCart, ArrowRight, User } from "lucide-react";
 import { Button } from "../ui/button";
 import {
   DropdownMenu,
@@ -15,6 +16,7 @@ import { useState, useEffect } from "react";
 import { useCart } from "../../context/CartContext";
 import { gsap } from 'gsap';
 import UserSocialLogin from "../auth/UserSocialLogin";
+import CustomerAuth from "../auth/CustomerAuth";
 
 const languages = [
   { code: "en", label: "English" },
@@ -24,8 +26,10 @@ const languages = [
 function Header() {
   const { theme, toggleTheme } = useTheme();
   const { currentLanguage, changeLanguage } = useLanguage();
+  const { user, logout } = useCustomerAuth();
   const { t } = useTranslation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [showAuth, setShowAuth] = useState(false);
   const { cart } = useCart();
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
@@ -77,6 +81,7 @@ function Header() {
                 {[
                   { to: '/', label: t("nav.home"), icon: '🏠' },
                   { to: '/products', label: t("nav.products"), icon: '🪑' },
+                  { to: '/track-order', label: t('nav.trackOrder'), icon: '📦' },
                   { to: '/about', label: t("nav.about"), icon: '💫' }
                 ].map((item, index) => (
                   <Link
@@ -110,7 +115,52 @@ function Header() {
               </div>
             </Link>
 
-            {/* User Authentication */}
+            {/* Customer Authentication */}
+            <div className="hidden md:flex">
+              {user ? (
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button
+                      variant="ghost"
+                      className="flex items-center gap-2 px-4 py-2 rounded-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-all duration-200"
+                    >
+                      <User className="h-4 w-4" />
+                      <span className="text-sm font-medium">{user.username}</span>
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end" className="min-w-[180px] bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-lg rounded-lg p-1">
+                    <DropdownMenuItem>
+                      <Link to="/account" className="w-full p-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md transition-all duration-200">
+                        {t('auth.myAccount')}
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem>
+                      <Link to="/account?tab=orders" className="w-full p-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md transition-all duration-200">
+                        {t('auth.orderHistory')}
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem>
+                      <button
+                        onClick={logout}
+                        className="w-full text-left p-2 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/30 rounded-md transition-all duration-200"
+                      >
+                        {t('auth.signOut')}
+                      </button>
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              ) : (
+                <Button
+                  onClick={() => setShowAuth(true)}
+                  className="flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white shadow-sm hover:shadow-md transition-all duration-200"
+                >
+                  <User className="h-4 w-4" />
+                  <span className="text-sm font-medium">{t('auth.signIn')}</span>
+                </Button>
+              )}
+            </div>
+
+            {/* Admin Auth (Keep existing) */}
             <UserSocialLogin className="hidden md:flex" />
 
             {/* Language & Theme Controls */}
@@ -198,6 +248,7 @@ function Header() {
               {[
                 { to: '/', label: t("nav.home"), icon: '🏠' },
                 { to: '/products', label: t("nav.products"), icon: '🪑' },
+                { to: '/track-order', label: t('nav.trackOrder'), icon: '📦' },
                 { to: '/about', label: t("nav.about"), icon: '💫' },
                 { to: '/cart', label: `${t("nav.cart")} (${cart.length})`, icon: '🛒' },
                 { to: '/admin', label: t("nav.admin"), icon: '⚡' }
@@ -281,6 +332,16 @@ function Header() {
           </div>
         </div>
       </div>
+
+      {/* Customer Auth Modal */}
+      {showAuth && (
+        <CustomerAuth
+          onLogin={(userData) => {
+            setShowAuth(false);
+          }}
+          onClose={() => setShowAuth(false)}
+        />
+      )}
     </header>
   );
 }

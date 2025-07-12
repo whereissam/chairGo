@@ -32,6 +32,10 @@ export default {
     cart: "購物車",
     about: "關於我們",
     allProducts: "全部商品",
+    trackOrder: "查詢訂單",
+    myAccount: "我的帳戶",
+    signIn: "登入",
+    signOut: "登出",
   },
   categories: {
     all: "全部商品",
@@ -104,15 +108,33 @@ export default {
     }
   },
   checkout: {
-    title: '結帳',
+    title: '結帳頁面',
+    subtitle: '請填寫您的聯絡資訊以完成訂購',
     name: '姓名',
-    email: '電子郵件',
-    phone: '電話',
-    address: '送貨地址',
-    submitOrder: '提交訂單',
+    email: '電子信箱',
+    phone: '聯絡電話',
+    address: '收件地址',
+    notes: '備註',
+    notesOptional: '備註 (選填)',
+    notesPlaceholder: '如有特殊需求或指示，請在此說明...',
+    submitOrder: '確認訂購',
     processing: '處理中...',
     successMessage: '訂單已成功提交！訂單編號：{{orderId}}',
     errorMessage: '處理訂單時發生錯誤。請重試。',
+    contactInfo: '聯絡資訊',
+    orderSummary: '訂單摘要',
+    total: '總計',
+    quantity: '數量',
+    emailHelp: '我們會透過電子信箱通知您訂單狀態',
+    phoneHelp: '方便我們聯繫您確認訂單',
+    addressHelp: '請務必填寫正確地址，以確保商品能順利送達',
+    loggedInNotice: '您已登入帳號',
+    loggedInDescription: '此訂單將會保存到您的帳戶中，方便日後查詢',
+    termsNotice: '點擊「確認訂購」即表示您同意我們的服務條款',
+    namePlaceholder: '請輸入您的完整姓名',
+    emailPlaceholder: 'example@email.com',
+    phonePlaceholder: '請輸入您的聯絡電話',
+    addressPlaceholder: '請輸入完整的收件地址，包含縣市、區域、街道、門牌號碼',
   },
   footer: {
     customerService: "客戶服務",
@@ -299,5 +321,135 @@ export default {
       formSuccess: "問題提交成功！",
       formError: "提交問題時發生錯誤，請重試。",
     }
+  },
+  customer: {
+    dashboard: {
+      title: '我的帳戶',
+      welcome: '歡迎回來，{{username}}！',
+      myOrders: '我的訂單',
+      addresses: '收件地址',
+      profile: '個人資料',
+      signOut: '登出',
+    },
+    orders: {
+      title: '我的訂單紀錄',
+      noOrders: '尚無訂單紀錄',
+      noOrdersDescription: '當您完成第一筆訂單後，將會顯示在這裡',
+      orderNumber: '訂單編號',
+      orderDate: '訂購日期',
+      orderTotal: '訂單總額',
+      orderItems: '訂購商品',
+      loading: '載入中...',
+    },
+    addresses: {
+      title: '收件地址',
+      noAddresses: '尚未儲存任何地址',
+      noAddressesDescription: '添加地址以便快速結帳',
+      addAddress: '新增地址',
+      defaultAddress: '預設地址',
+      shippingAddress: '收件地址',
+      billingAddress: '帳單地址',
+      loading: '載入中...',
+    },
+    profile: {
+      title: '個人資料',
+      username: '使用者名稱',
+      email: '電子信箱',
+      accountType: '帳戶類型',
+      memberSince: '註冊日期',
+      regularMember: '一般會員',
+      admin: '管理員',
+    }
+  },
+  orderTracking: {
+    title: '訂單查詢',
+    subtitle: '輸入您的訂單編號來查看最新狀態',
+    searchPlaceholder: '請輸入訂單編號 (例如: ORDER-1234567890)',
+    searchButton: '查詢訂單',
+    searching: '搜尋中...',
+    notFound: '找不到此訂單編號，請檢查後重新輸入',
+    searchError: '搜尋時發生錯誤，請稍後重試',
+    enterOrderNumber: '請輸入訂單編號',
+    orderProgress: '訂單進度',
+    currentStatus: '目前狀態',
+    orderItems: '訂購商品',
+    shippingAddress: '收件地址',
+    customerName: '客戶姓名',
+    paymentStatus: '付款狀態',
+  },
+  orderStatus: {
+    pending: {
+      text: '等待確認',
+      description: '我們正在處理您的訂單'
+    },
+    confirmed: {
+      text: '已確認',
+      description: '訂單已確認，準備出貨'
+    },
+    processing: {
+      text: '準備中',
+      description: '正在包裝您的商品'
+    },
+    shipped: {
+      text: '已出貨',
+      description: '商品正在運送途中'
+    },
+    delivered: {
+      text: '已送達',
+      description: '商品已成功送達'
+    },
+    cancelled: {
+      text: '已取消',
+      description: '此訂單已被取消'
+    }
+  },
+  paymentStatus: {
+    pending: '待付款',
+    paid: '已付款',
+    failed: '付款失敗',
+    refunded: '已退款'
+  },
+  admin: {
+    orders: {
+      title: '訂單管理系統',
+      refresh: '重新整理',
+      loading: '載入訂單中...',
+      searchAndFilter: '搜尋與篩選',
+      searchPlaceholder: '搜尋訂單編號、客戶姓名或電子信箱...',
+      allStatuses: '所有狀態',
+      noOrdersFound: '沒有找到訂單',
+      adjustFilters: '嘗試調整搜尋條件或篩選器',
+      customerName: '客戶姓名',
+      customerEmail: '電子信箱',
+      customerPhone: '聯絡電話',
+      orderDate: '訂購日期',
+      orderTotal: '訂單總額',
+      orderStatus: '訂單狀態',
+      paymentStatus: '付款狀態',
+      orderItems: '訂購商品',
+      shippingAddress: '收件地址',
+      quantity: '數量',
+      notProvided: '未提供',
+    }
+  },
+  auth: {
+    signIn: '登入',
+    signUp: '註冊',
+    username: '使用者名稱',
+    email: '電子信箱',
+    password: '密碼',
+    confirmPassword: '確認密碼',
+    loginButton: '登入',
+    registerButton: '註冊',
+    loading: '載入中...',
+    noAccount: '還沒有帳戶？立即註冊',
+    hasAccount: '已有帳戶？立即登入',
+    passwordMismatch: '密碼不符',
+    loginFailed: '登入失敗',
+    registerSuccess: '註冊成功！請使用新帳戶登入。',
+    registerFailed: '註冊失敗',
+    networkError: '網路錯誤，請重試。',
+    myAccount: '我的帳戶',
+    orderHistory: '訂單紀錄',
   }
 }; 

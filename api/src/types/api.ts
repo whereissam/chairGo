@@ -87,3 +87,76 @@ export interface RegisterRequest {
   email: string
   password: string
 }
+
+// Order types
+export interface Order extends BaseResource {
+  object: 'order'
+  order_number: string
+  user_id: string | null
+  customer_name: string
+  customer_email: string
+  customer_phone?: string
+  shipping_address: string
+  total_amount: number
+  currency: string
+  status: 'pending' | 'confirmed' | 'processing' | 'shipped' | 'delivered' | 'cancelled'
+  payment_status: 'pending' | 'paid' | 'failed' | 'refunded'
+  notes?: string
+  items: OrderItem[]
+}
+
+export interface OrderItem {
+  id: string
+  product_id: string
+  product_name: string
+  product_price: number
+  quantity: number
+  subtotal: number
+}
+
+export interface CreateOrderRequest {
+  user_id?: string
+  customer_name: string
+  customer_email: string
+  customer_phone?: string
+  shipping_address: string
+  total_amount: number
+  currency?: string
+  notes?: string
+  items: {
+    product_id: string
+    product_name: string
+    product_price: number
+    quantity: number
+    subtotal: number
+  }[]
+}
+
+// Customer Address types
+export interface CustomerAddress extends BaseResource {
+  object: 'customer_address'
+  user_id: string
+  address_type: 'shipping' | 'billing'
+  first_name: string
+  last_name: string
+  street_address: string
+  city: string
+  state?: string
+  postal_code: string
+  country: string
+  phone?: string
+  is_default: boolean
+}
+
+export interface CreateAddressRequest {
+  address_type: 'shipping' | 'billing'
+  first_name: string
+  last_name: string
+  street_address: string
+  city: string
+  state?: string
+  postal_code: string
+  country: string
+  phone?: string
+  is_default?: boolean
+}

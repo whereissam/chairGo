@@ -4,6 +4,7 @@ import { Button } from '../ui/button'
 import { ProductManager } from './ProductManager'
 import { DashboardStats } from './DashboardStats'
 import { UserManager } from './UserManager'
+import OrderManager from './OrderManager'
 import { API_BASE_URL } from '../../config/api'
 import { 
   ShoppingBag, 
@@ -11,7 +12,8 @@ import {
   BarChart3, 
   Settings, 
   LogOut,
-  Package
+  Package,
+  ClipboardList
 } from 'lucide-react'
 import toast from 'react-hot-toast'
 
@@ -54,6 +56,7 @@ export function AdminDashboard({ user, onLogout }) {
   const navigationItems = [
     { id: 'dashboard', label: 'Dashboard', icon: BarChart3 },
     { id: 'products', label: 'Products', icon: Package },
+    { id: 'orders', label: 'Orders', icon: ClipboardList },
     { id: 'users', label: 'Users', icon: Users },
     { id: 'settings', label: 'Settings', icon: Settings }
   ]
@@ -64,6 +67,8 @@ export function AdminDashboard({ user, onLogout }) {
         return <DashboardStats stats={stats} loading={loading} />
       case 'products':
         return <ProductManager />
+      case 'orders':
+        return <OrderManager />
       case 'users':
         return <UserManager />
       case 'settings':
