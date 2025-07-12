@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react'
 import { useAuth } from '../../context/AuthContext'
 import AuthGuard from '../security/AuthGuard'
 import SecurityMonitor from '../security/SecurityMonitor'
-import DashboardStats from './DashboardStats'
-import ProductManager from './ProductManager'
-import UserManager from './UserManager'
+import { DashboardStats } from './DashboardStats'
+import { ProductManager } from './ProductManager'
+import { UserManager } from './UserManager'
 import AuditLogViewer from './AuditLogViewer'
 
 const SecureAdminDashboard = () => {
