@@ -14,6 +14,7 @@ import { cn } from "../../lib/utils";
 import { useState, useEffect } from "react";
 import { useCart } from "../../context/CartContext";
 import { gsap } from 'gsap';
+import UserSocialLogin from "../auth/UserSocialLogin";
 
 const languages = [
   { code: "en", label: "English" },
@@ -108,6 +109,9 @@ function Header() {
                 )}
               </div>
             </Link>
+
+            {/* User Authentication */}
+            <UserSocialLogin className="hidden md:flex" />
 
             {/* Language & Theme Controls */}
             <div className="hidden md:flex items-center space-x-3">

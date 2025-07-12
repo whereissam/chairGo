@@ -16,6 +16,9 @@ import ProtectedRoute from "./components/security/ProtectedRoute";
 import SecureLoginForm from "./components/security/SecureLoginForm";
 import SecureAdminDashboard from "./components/admin/SecureAdminDashboard";
 import AuditLogViewer from "./components/admin/AuditLogViewer";
+import ClerkAdminLogin from "./components/auth/ClerkAdminLogin";
+import ClerkAuthWrapper from "./components/auth/ClerkAuthWrapper";
+import SocialLoginSection from "./components/auth/SocialLoginSection";
 
 // Lazy load components for code splitting
 const HomePage = lazy(() => import("./pages/HomePage"));
@@ -39,7 +42,8 @@ function App() {
           <ProductProvider>
             <CartProvider>
               <AuthProvider>
-                <Router>
+                <ClerkAuthWrapper>
+                  <Router>
               <div className="min-h-screen bg-background">
                 <Toaster position="top-center" />
                 <Routes>
@@ -51,8 +55,8 @@ function App() {
                     </div>
                   } />
                   
-                  {/* Secure Admin routes */}
-                  <Route path="/admin" element={<SecureLoginForm />} />
+                  {/* Secure Admin routes with Clerk */}
+                  <Route path="/admin" element={<ClerkAdminLogin />} />
                   <Route path="/admin/dashboard" element={
                     <ProtectedRoute requiredRole="admin">
                       <SecureAdminDashboard />
@@ -63,6 +67,7 @@ function App() {
                       <AuditLogViewer />
                     </ProtectedRoute>
                   } />
+                  <Route path="/admin/login-traditional" element={<SecureLoginForm />} />
                   
                   {/* Regular pages with header/footer */}
                   <Route 
@@ -106,7 +111,8 @@ function App() {
                   />
                 </Routes>
               </div>
-                </Router>
+                  </Router>
+                </ClerkAuthWrapper>
               </AuthProvider>
             </CartProvider>
           </ProductProvider>

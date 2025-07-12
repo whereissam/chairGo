@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react'
+import { useUser, useClerk } from '@clerk/clerk-react'
 import { API_BASE_URL } from '../config/api'
 
 const AuthContext = createContext(null)
@@ -73,6 +74,10 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null)
   const [loading, setLoading] = useState(true)
   const [isAuthenticated, setIsAuthenticated] = useState(false)
+  
+  // Clerk hooks
+  const { user: clerkUser, isSignedIn, isLoaded } = useUser()
+  const { signOut: clerkSignOut } = useClerk()
 
   // Auto-logout timer
   const [logoutTimer, setLogoutTimer] = useState(null)
@@ -117,11 +122,40 @@ export const AuthProvider = ({ children }) => {
     }
   }
 
-  // Login function
+  // Login function (enhanced for Clerk integration)
   const login = async (credentials) => {
     try {
       setLoading(true)
       
+      // Handle Clerk-based login
+      if (credentials.fromClerk && clerkUser) {
+        // Verify Clerk user has admin role
+        const isAdmin = clerkUser.publicMetadata?.role === 'admin' || 
+                       clerkUser.privateMetadata?.role === 'admin'
+        
+        if (!isAdmin) {
+          throw new Error('Admin access required')
+        }
+
+        // Create user object from Clerk data
+        const adminUser = {
+          id: clerkUser.id,
+          username: clerkUser.username || clerkUser.emailAddresses[0]?.emailAddress,
+          email: clerkUser.emailAddresses[0]?.emailAddress,
+          role: 'admin',
+          firstName: clerkUser.firstName,
+          lastName: clerkUser.lastName,
+          imageUrl: clerkUser.imageUrl
+        }
+
+        setUser(adminUser)
+        setIsAuthenticated(true)
+        resetActivityTimer()
+        
+        return { success: true, user: adminUser }
+      }
+      
+      // Traditional login for fallback
       const response = await fetch(`${API_BASE_URL}/api/v1/auth/login`, {
         method: 'POST',
         headers: {
@@ -160,7 +194,7 @@ export const AuthProvider = ({ children }) => {
     }
   }
 
-  // Logout function
+  // Logout function (enhanced for Clerk integration)
   const logout = async (reason = 'User logged out') => {
     try {
       // Clear timers
@@ -185,6 +219,11 @@ export const AuthProvider = ({ children }) => {
         }
       }
 
+      // Sign out from Clerk if signed in
+      if (isSignedIn) {
+        await clerkSignOut()
+      }
+
       // Clear all auth data
       TokenStorage.clearToken()
       setUser(null)
@@ -200,11 +239,41 @@ export const AuthProvider = ({ children }) => {
     }
   }
 
-  // Initialize authentication state
+  // Initialize authentication state (enhanced for Clerk integration)
   const initializeAuth = async () => {
     try {
       setLoading(true)
       
+      // Wait for Clerk to load
+      if (!isLoaded) {
+        return
+      }
+      
+      // Check Clerk authentication first
+      if (isSignedIn && clerkUser) {
+        const isAdmin = clerkUser.publicMetadata?.role === 'admin' || 
+                       clerkUser.privateMetadata?.role === 'admin'
+        
+        if (isAdmin) {
+          const adminUser = {
+            id: clerkUser.id,
+            username: clerkUser.username || clerkUser.emailAddresses[0]?.emailAddress,
+            email: clerkUser.emailAddresses[0]?.emailAddress,
+            role: 'admin',
+            firstName: clerkUser.firstName,
+            lastName: clerkUser.lastName,
+            imageUrl: clerkUser.imageUrl
+          }
+          
+          setUser(adminUser)
+          setIsAuthenticated(true)
+          resetActivityTimer()
+          setLoading(false)
+          return
+        }
+      }
+      
+      // Fallback to traditional token-based auth
       const token = TokenStorage.getToken()
       const storedUser = TokenStorage.getUser()
 
@@ -254,10 +323,10 @@ export const AuthProvider = ({ children }) => {
     }
   }, [isAuthenticated, resetActivityTimer])
 
-  // Initialize auth on mount
+  // Initialize auth on mount and when Clerk state changes
   useEffect(() => {
     initializeAuth()
-  }, [])
+  }, [isLoaded, isSignedIn, clerkUser])
 
   // Cleanup on unmount
   useEffect(() => {
