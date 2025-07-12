@@ -1,4 +1,4 @@
-import { Context } from 'hono'
+import type { Context } from 'hono'
 import { ApiError } from '../errors/ApiError'
 import { ApiResponse } from '../types/api'
 
@@ -12,7 +12,7 @@ export const errorHandler = (err: Error, c: Context) => {
         timestamp: Math.floor(Date.now() / 1000)
       }
     }
-    return c.json(response, err.statusCode)
+    return c.json(response, err.statusCode as any)
   }
 
   // Handle unknown errors
@@ -25,5 +25,5 @@ export const errorHandler = (err: Error, c: Context) => {
       timestamp: Math.floor(Date.now() / 1000)
     }
   }
-  return c.json(response, 500)
+  return c.json(response, 500 as any)
 }

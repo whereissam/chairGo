@@ -1,4 +1,4 @@
-import { Context } from 'hono'
+import type { Context } from 'hono'
 import { AdminService } from '../services/AdminService'
 import { AuthService } from '../services/AuthService'
 import { ApiError } from '../errors/ApiError'
@@ -148,7 +148,7 @@ export class AdminController {
           timestamp: Math.floor(Date.now() / 1000)
         }
       }
-      return c.json(response, error.statusCode)
+      return c.json(response, error.statusCode as any)
     }
 
     console.error('Unexpected error:', error)
@@ -161,6 +161,6 @@ export class AdminController {
         timestamp: Math.floor(Date.now() / 1000)
       }
     }
-    return c.json(response, 500)
+    return c.json(response, 500 as any)
   }
 }

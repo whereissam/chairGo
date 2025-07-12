@@ -140,7 +140,7 @@ export class ProductModel {
 
   async delete(id: string): Promise<boolean> {
     const result = await this.db.prepare('DELETE FROM products WHERE id = ?').bind(id).run()
-    return result.changes > 0
+    return result.success
   }
 
   private transformToProduct(row: any): Product {

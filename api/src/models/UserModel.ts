@@ -74,7 +74,7 @@ export class UserModel {
       'UPDATE users SET role = ?, updated_at = ? WHERE id = ?'
     ).bind(role, now, id).run()
 
-    if (result.changes === 0) {
+    if (!result.success) {
       throw new NotFoundError('User')
     }
 
@@ -88,7 +88,7 @@ export class UserModel {
 
   async delete(id: string): Promise<boolean> {
     const result = await this.db.prepare('DELETE FROM users WHERE id = ?').bind(id).run()
-    return result.changes > 0
+    return result.success
   }
 
   async findAll(params: { limit?: number; offset?: number }): Promise<{
