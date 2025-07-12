@@ -44,15 +44,11 @@ export function ProductManager() {
         }
       })
 
-      if (response.ok) {
-        toast.success('Product deleted successfully')
-        fetchProducts()
-      } else {
-        const data = await response.json()
-        toast.error(data.error || 'Failed to delete product')
-      }
+      toast.success('Product deleted successfully')
+      logAction('delete', 'product', { productId })
+      fetchProducts()
     } catch (error) {
-      toast.error('Network error')
+      toast.error(error.message || 'Failed to delete product')
     }
   }
 

@@ -8,15 +8,19 @@ import { ProductProvider } from "./context/ProductContext";
 import { ThemeProvider } from "./context/ThemeContext";
 import { LanguageProvider } from "./context/LanguageContext";
 import { CartProvider } from "./context/CartContext";
+import { AuthProvider } from "./context/AuthContext";
 import { Toaster } from "react-hot-toast";
 import LoadingSpinner from "./components/ui/LoadingSpinner";
 import ErrorBoundary from "./components/ui/ErrorBoundary";
+import ProtectedRoute from "./components/security/ProtectedRoute";
+import SecureLoginForm from "./components/security/SecureLoginForm";
+import SecureAdminDashboard from "./components/admin/SecureAdminDashboard";
+import AuditLogViewer from "./components/admin/AuditLogViewer";
 
 // Lazy load components for code splitting
 const HomePage = lazy(() => import("./pages/HomePage"));
 const CategoryPage = lazy(() => import("./pages/CategoryPage"));
 const ProductPage = lazy(() => import("./pages/ProductPage"));
-const AdminPage = lazy(() => import("./pages/AdminPage"));
 const CartPage = lazy(() => import("./pages/CartPage"));
 const AboutPage = lazy(() => import("./pages/AboutPage"));
 const CheckoutForm = lazy(() => import("./components/checkout/CheckoutForm").then(module => ({ default: module.CheckoutForm })));
@@ -34,7 +38,8 @@ function App() {
         <ThemeProvider>
           <ProductProvider>
             <CartProvider>
-              <Router>
+              <AuthProvider>
+                <Router>
               <div className="min-h-screen bg-background">
                 <Toaster position="top-center" />
                 <Routes>
@@ -46,11 +51,17 @@ function App() {
                     </div>
                   } />
                   
-                  {/* Admin routes without header/footer */}
-                  <Route path="/admin/*" element={
-                    <Suspense fallback={<LoadingSpinner />}>
-                      <AdminPage />
-                    </Suspense>
+                  {/* Secure Admin routes */}
+                  <Route path="/admin" element={<SecureLoginForm />} />
+                  <Route path="/admin/dashboard" element={
+                    <ProtectedRoute requiredRole="admin">
+                      <SecureAdminDashboard />
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/admin/audit-logs" element={
+                    <ProtectedRoute requiredRole="admin">
+                      <AuditLogViewer />
+                    </ProtectedRoute>
                   } />
                   
                   {/* Regular pages with header/footer */}
@@ -95,7 +106,8 @@ function App() {
                   />
                 </Routes>
               </div>
-              </Router>
+                </Router>
+              </AuthProvider>
             </CartProvider>
           </ProductProvider>
         </ThemeProvider>

@@ -4,6 +4,7 @@ import { logger } from 'hono/logger'
 import { authRouter } from './routes/auth'
 import { productRouter } from './routes/products'
 import { adminRouter } from './routes/admin'
+import { errorHandler } from './middleware/errorHandler'
 
 export interface Env {
   DB: D1Database
@@ -27,11 +28,25 @@ app.get('/', (c) => {
   return c.json({ 
     message: 'ChairGo API is running!',
     timestamp: new Date().toISOString(),
-    version: '1.0.0'
+    version: '1.0.0',
+    api_version: 'v1',
+    endpoints: {
+      v1: '/api/v1',
+      legacy: '/api'
+    }
   })
 })
 
-// Routes
+// API Versioning
+const v1 = new Hono<{ Bindings: Env }>()
+v1.route('/auth', authRouter)
+v1.route('/products', productRouter)
+v1.route('/admin', adminRouter)
+
+// Mount versioned API
+app.route('/api/v1', v1)
+
+// Legacy routes (for backward compatibility)
 app.route('/api/auth', authRouter)
 app.route('/api/products', productRouter)
 app.route('/api/admin', adminRouter)
@@ -42,9 +57,6 @@ app.notFound((c) => {
 })
 
 // Error handler
-app.onError((err, c) => {
-  console.error(`${err}`)
-  return c.json({ error: 'Internal Server Error' }, 500)
-})
+app.onError(errorHandler)
 
 export default app

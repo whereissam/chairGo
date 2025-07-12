@@ -134,7 +134,7 @@ const ProductCard = React.forwardRef(({
       variant="default"
       hover
       className={cn(
-        'group cursor-pointer overflow-hidden transition-all duration-200',
+        'group cursor-pointer overflow-hidden transition-all duration-200 h-full flex flex-col',
         !inStock && 'opacity-75',
         className
       )}
@@ -173,9 +173,9 @@ const ProductCard = React.forwardRef(({
         )}
       </div>
 
-      <CardContent size="sm" className="pt-4">
+      <CardContent size="sm" className="pt-4 flex flex-col flex-grow">
         {/* Title */}
-        <h3 className="font-medium text-sm line-clamp-2 mb-2 group-hover:text-primary transition-colors">
+        <h3 className="font-medium text-sm line-clamp-2 mb-2 group-hover:text-primary transition-colors min-h-[2.5rem]">
           {title}
         </h3>
 
@@ -204,7 +204,7 @@ const ProductCard = React.forwardRef(({
         )}
 
         {/* Price */}
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center space-x-2 mt-auto">
           <span className="font-semibold text-lg text-primary">
             {formatPrice(price)}
           </span>
